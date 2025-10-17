@@ -2,10 +2,10 @@ package com.example.frc5987scoutingapp.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "QuickGameStats")
+@Entity(tableName = "quickGameStats")
 
 
-data class QuickGameStats (
+data class quickGameStats (
     @PrimaryKey val teamNumber: Int,
     val id: Int = 0,
     val matchNumber: Int,

@@ -8,13 +8,13 @@ import androidx.room.PrimaryKey
     tableName = "gameData",
     //: הגדרת המפתח הזר שמקשר לטבלת Team
     foreignKeys = [ForeignKey(
-        entity = Team::class,
+        entity = teams::class,
         parentColumns = ["teamNumber"],
         childColumns = ["teamNumber"],
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class GameData(
+data class gameData(
     @PrimaryKey(autoGenerate = true)
     //val id: Int = 0,
     //val matchNumber: Int,

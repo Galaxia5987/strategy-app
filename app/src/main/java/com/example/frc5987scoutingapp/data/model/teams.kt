@@ -3,7 +3,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "teams")
-data class Team (
+data class teams (
     @PrimaryKey val teamNumber: Int,
     val teamName: String,
     val teamCoachNotes: String,

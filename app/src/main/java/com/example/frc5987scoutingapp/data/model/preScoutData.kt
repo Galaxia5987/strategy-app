@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     tableName = "preScoutData",
     //: הגדרת המפתח הזר שמקשר לטבלת Team
     foreignKeys = [ForeignKey(
-        entity = Team::class,
+        entity = teams::class,
         parentColumns = ["teamNumber"],
         childColumns = ["teamNumber"],
         onDelete = ForeignKey.CASCADE
