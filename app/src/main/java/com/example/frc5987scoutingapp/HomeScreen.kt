@@ -60,7 +60,7 @@ fun HeaderSection() {
         )
         Text(
             text = "startegy",
-            color = Color.White,
+            color = Color.Blue,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold
         )

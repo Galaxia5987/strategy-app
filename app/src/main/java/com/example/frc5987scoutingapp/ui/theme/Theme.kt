@@ -53,7 +53,7 @@ fun FRC5987ScoutingAppTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        Typography = Typography,
+        typography = typography,
         content = content
     )
 }

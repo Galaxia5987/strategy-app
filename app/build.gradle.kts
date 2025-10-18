@@ -42,7 +42,7 @@ android {
 
 dependencies {
 
-    val roomVersion = "2.6.1"
+    val roomVersion = "2.8.2"
 
     implementation(libs.androidx.core.ktx)
 
@@ -56,12 +56,12 @@ dependencies {
     implementation(libs.androidx.material3)
 
 
-    implementation("androidx.room:room-runtime:$roomVersion:2.8.2")
-    implementation("androidx.room:room-ktx:$roomVersion:2.8.2")
-    implementation("androidx.room:room-paging:$roomVersion:2.8.2")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-paging:$roomVersion:")
     implementation("androidx.navigation:navigation-compose:2.9.5")
 
-    ksp("androidx.room:room-compiler:$roomVersion:2.8.2")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
 
     testImplementation(libs.junit)
