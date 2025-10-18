@@ -1,5 +1,6 @@
 package com.example.frc5987scoutingapp
 
+import android.R.drawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,22 +13,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun SimulationBoardScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(
-            text = "מסך סימולציית לוח המשחק",
-            fontSize = 24.sp,
-            color = Color.Black
+        Image(
+            painter = painterResource(id = com.example.frc5987scoutingapp.R.drawable.simulation_board),
+            contentDescription = "Simulation Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop // שיטה מומלצת למילוי המסך
         )
-        // כאן יבואו כל רכיבי הלוח והסימולציה המורכבים יותר
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            // כאן יבואו כל רכיבי הלוח והסימולציה המורכבים יותר
+        }
     }
 }

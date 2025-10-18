@@ -25,20 +25,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.foundation.layout.Box // 💡 ייבוא חובה
 
 
 @Composable
 fun MainScreenContent(modifier: Modifier = Modifier, navController: NavController) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        HeaderSection()
-        Spacer(modifier = Modifier.height(32.dp))
-        NavigationButtonsColumn(navController = navController)
+        Image(
+            painter = painterResource(id = R.drawable.main_page_background),
+            contentDescription = "main page Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            HeaderSection()
+            Spacer(modifier = Modifier.height(32.dp))
+            NavigationButtonsColumn(navController = navController)
+        }
     }
 }
 
@@ -89,7 +101,6 @@ fun AppButton(text: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 12.dp),
-        // 💡 שימוש ב-RoundedCornerShape במקום בנתיב המלא
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
