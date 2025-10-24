@@ -1,7 +1,6 @@
-package com.example.frc5987scoutingapp
+package com.example.frc5987scoutingapp.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.layout.Box // 💡 ייבוא חובה
+import com.example.frc5987scoutingapp.R
 
 
 @Composable

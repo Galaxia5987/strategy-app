@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:gravity="top|center_horizontal"
     android:paddingTop="32dp"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <ImageView
         android:id="@+id/simulation_Board"
