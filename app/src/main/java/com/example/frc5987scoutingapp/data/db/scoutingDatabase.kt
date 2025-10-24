@@ -29,14 +29,14 @@ abstract class scoutingDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     scoutingDatabase::class.java,
-                    "frc_scouting_db" // שם קובץ הדאטה בייס במכשיר
+                    "frc_scouting_db"
                 )
 
                     .fallbackToDestructiveMigration()
                     .build()
 
                 INSTANCE = instance
-                instance
+                return instance
             }
         }
     }
