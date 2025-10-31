@@ -42,11 +42,15 @@ android {
 
 dependencies {
 
-    val roomVersion = "2.8.2"
+    val roomVersion = "2.8.3"
+    val lifecycle_version = "2.9.4"
+    val arch_version = "2.2.0"
 
     implementation(libs.androidx.core.ktx)
 
     // Compose/Lifecycle
+    //implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}")
+    //implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycle_version}")
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

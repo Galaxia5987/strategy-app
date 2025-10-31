@@ -10,8 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.frc5987scoutingapp.R
 
 @Composable
@@ -23,17 +27,22 @@ fun SimulationBoardScreen() {
             painter = painterResource(id = R.drawable.simulation_board),
             contentDescription = "Simulation Background",
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop // שיטה מומלצת למילוי המסך
+            contentScale = ContentScale.Fit
         )
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth()
+                .height(200.dp)
+                .rotate(90f),//למחוק בעתיד - בטאבלט לא צריך את זה!
         ) {
 
-            // כאן יבואו כל רכיבי הלוח והסימולציה המורכבים יותר
+            // כאן להסיף את רכיבי הלוח והסימולציה המורכבים יותר
         }
     }
+}
+
+@Preview
+@Composable
+private fun SimulationBoardScreenPreview() {
+    SimulationBoardScreen()
 }

@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.foundation.layout.Box // 💡 ייבוא חובה
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.frc5987scoutingapp.R
 
 
@@ -54,8 +56,6 @@ fun MainScreenContent(modifier: Modifier = Modifier, navController: NavControlle
     }
 }
 
-
-
 @Composable
 fun HeaderSection() {
     Row(
@@ -63,19 +63,20 @@ fun HeaderSection() {
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.padding(bottom = 32.dp)
     ) {
+        Text(
+            text = "startegy",
+            color = Color.Blue,
+            fontSize = 60.sp,
+            fontWeight = FontWeight.Bold
+        )
         Image(
             painter = painterResource(id = R.drawable.galaxia_logo),
             contentDescription = "Galaxia Logo",
             modifier = Modifier
-                .size(100.dp)
+                .size(200.dp)
                 .padding(end = 12.dp)
         )
-        Text(
-            text = "startegy",
-            color = Color.Blue,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
+
     }
 }
 
@@ -114,4 +115,26 @@ fun AppButton(text: String, onClick: () -> Unit) {
             modifier = Modifier.padding(vertical = 8.dp)
         )
     }
+
+
 }
+
+@Preview
+@Composable
+private fun MainScreenContentPreview() {
+    MainScreenContent(navController = NavController(LocalContext.current))
+}
+
+@Preview
+@Composable
+private fun HeaderSectionPreview() {
+    HeaderSection()
+}
+
+@Preview
+@Composable
+private fun NavigationButtonsColumnPreview() {
+    NavigationButtonsColumn(navController = NavController(LocalContext.current))
+}
+
+
