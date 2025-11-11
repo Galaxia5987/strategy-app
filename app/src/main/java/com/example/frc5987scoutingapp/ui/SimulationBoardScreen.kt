@@ -33,13 +33,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.frc5987scoutingapp.R
 
-data class PathData(val path: Path, val color: Color)
+data class PathData(val points: List<Offset>, val color: Color)
 
 @Composable
 fun SimulationBoardScreen() {
     val paths = remember { mutableStateListOf<PathData>() }
     val currentPathPoints = remember { mutableStateListOf<Offset>() }
     var drawColor by remember { mutableStateOf(Color.Black) }
+    var isErasing by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -57,20 +58,26 @@ fun SimulationBoardScreen() {
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragStart = { offset ->
-                            currentPathPoints.add(offset)
+                            if (!isErasing) {
+                                currentPathPoints.add(offset)
+                            }
                         },
                         onDrag = { change, _ ->
-                            currentPathPoints.add(change.position)
-                        },
-                        onDragEnd = {
-                            if (currentPathPoints.size > 1) {
-                                val path = Path().apply {
-                                    moveTo(currentPathPoints.first().x, currentPathPoints.first().y)
-                                    for (i in 1 until currentPathPoints.size) {
-                                        lineTo(currentPathPoints[i].x, currentPathPoints[i].y)
+                            if (isErasing) {
+                                val eraserPosition = change.position
+                                val eraserRadius = 15.dp.toPx()
+                                paths.removeAll { pathData ->
+                                    pathData.points.any { point ->
+                                        (point - eraserPosition).getDistance() < eraserRadius
                                     }
                                 }
-                                paths.add(PathData(path, drawColor))
+                            } else {
+                                currentPathPoints.add(change.position)
+                            }
+                        },
+                        onDragEnd = {
+                            if (!isErasing && currentPathPoints.size > 1) {
+                                paths.add(PathData(currentPathPoints.toList(), drawColor))
                             }
                             currentPathPoints.clear()
                         },
@@ -81,11 +88,19 @@ fun SimulationBoardScreen() {
                 }
         ) {
             paths.forEach { pathData ->
-                drawPath(
-                    path = pathData.path,
-                    color = pathData.color,
-                    style = Stroke(width = 4.dp.toPx())
-                )
+                if (pathData.points.size > 1) {
+                    val path = Path().apply {
+                        moveTo(pathData.points.first().x, pathData.points.first().y)
+                        for (i in 1 until pathData.points.size) {
+                            lineTo(pathData.points[i].x, pathData.points[i].y)
+                        }
+                    }
+                    drawPath(
+                        path = path,
+                        color = pathData.color,
+                        style = Stroke(width = 4.dp.toPx())
+                    )
+                }
             }
 
             if (currentPathPoints.size > 1) {
@@ -117,6 +132,7 @@ fun SimulationBoardScreen() {
         Row(modifier = Modifier.align(Alignment.TopStart)) {
             IconButton(
                 onClick = {
+                    isErasing = false
                     drawColor = Color.Red
                 }
             ) {
@@ -124,6 +140,7 @@ fun SimulationBoardScreen() {
             }
             IconButton(
                 onClick = {
+                    isErasing = false
                     drawColor = Color.White
                 }
             ) {
@@ -131,6 +148,7 @@ fun SimulationBoardScreen() {
             }
             IconButton(
                 onClick = {
+                    isErasing = false
                     drawColor = Color.Blue
                 }
             ) {
@@ -138,6 +156,7 @@ fun SimulationBoardScreen() {
             }
             IconButton(
                 onClick = {
+                    isErasing = false
                     drawColor = Color.Green
                 }
             ) {
@@ -145,6 +164,7 @@ fun SimulationBoardScreen() {
             }
             IconButton(
                 onClick = {
+                    isErasing = false
                     drawColor = Color.Black
                 }
             ) {
@@ -152,6 +172,7 @@ fun SimulationBoardScreen() {
             }
             IconButton(
                 onClick = {
+                    isErasing = true
                     drawColor = Color.Transparent
                 }
             ) {
