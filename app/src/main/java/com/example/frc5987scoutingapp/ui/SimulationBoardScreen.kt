@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,8 +32,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.frc5987scoutingapp.R
+import kotlin.math.roundToInt
 
 data class PathData(val points: List<Offset>, val color: Color)
 
@@ -41,7 +45,8 @@ fun SimulationBoardScreen() {
     val currentPathPoints = remember { mutableStateListOf<Offset>() }
     var drawColor by remember { mutableStateOf(Color.Black) }
     var isErasing by remember { mutableStateOf(false) }
-
+    var offsetX by remember { mutableFloatStateOf(432f)}
+    var offsetY by remember { mutableFloatStateOf(1061f)}
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -51,7 +56,6 @@ fun SimulationBoardScreen() {
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Fit
         )
-
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -102,7 +106,6 @@ fun SimulationBoardScreen() {
                     )
                 }
             }
-
             if (currentPathPoints.size > 1) {
                 val currentPath = Path().apply {
                     moveTo(currentPathPoints.first().x, currentPathPoints.first().y)
@@ -180,6 +183,19 @@ fun SimulationBoardScreen() {
             }
         }
     }
+    Box(modifier = Modifier.size(16.dp)
+        .offset { IntOffset(offsetX.roundToInt(),offsetY.roundToInt())}
+        .background(Color.Blue)
+        .size(16.dp)
+        .border(2.dp, Color.Blue)
+        .pointerInput(Unit){
+            detectDragGestures { change, dragAmount ->
+                change.consume()
+                offsetX += dragAmount.x
+                offsetY += dragAmount.y
+            }
+        }
+    )
 }
 
 @Preview

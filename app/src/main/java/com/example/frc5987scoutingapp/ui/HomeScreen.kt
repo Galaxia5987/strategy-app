@@ -87,11 +87,11 @@ fun NavigationButtonsColumn(navController: NavController) {
         modifier = Modifier.width(300.dp)
     ) {
         AppButton(text = "סימולציית לוח משחק") {
-            navController.navigate("simulationBoardScreen")
+            navController.navigate("simulation_board")
         }
         AppButton(text = "תכנון משחק עתידי") { /* TODO */ }
         AppButton(text = "ALLIANCE VIEW") {
-            navController.navigate("allianceView")
+            navController.navigate("alliance_view")
         }
         AppButton(text = "בחירת ברית") { /* TODO */ }
     }
