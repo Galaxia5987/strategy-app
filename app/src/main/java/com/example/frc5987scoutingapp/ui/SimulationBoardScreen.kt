@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.frc5987scoutingapp.R
 import kotlin.math.roundToInt
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.clickable
 
 data class PathData(val points: List<Offset>, val color: Color)
 
@@ -45,8 +47,12 @@ fun SimulationBoardScreen() {
     val currentPathPoints = remember { mutableStateListOf<Offset>() }
     var drawColor by remember { mutableStateOf(Color.Black) }
     var isErasing by remember { mutableStateOf(false) }
-    var offsetX by remember { mutableFloatStateOf(432f)}
-    var offsetY by remember { mutableFloatStateOf(1061f)}
+
+    val density = LocalDensity.current
+    val initialOffsetX = remember { with(density) { 350.dp.toPx() } }
+    val initialOffsetY = remember { with(density) { 170.dp.toPx() } }
+    var offsetX by remember { mutableFloatStateOf(initialOffsetX) }
+    var offsetY by remember { mutableFloatStateOf(initialOffsetY) }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -181,21 +187,25 @@ fun SimulationBoardScreen() {
             ) {
                 Box(modifier = Modifier.size(24.dp).background(Color.Gray, CircleShape).border(1.dp, Color.Black, CircleShape))
             }
+
+            Box(modifier = Modifier
+                .offset { IntOffset(offsetX.roundToInt(),offsetY.roundToInt())}
+                .background(Color.Blue)
+                .size(26.dp)
+                .border(2.dp, Color.Blue)
+                .clickable(onClick = {})
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        offsetX -= dragAmount.x
+                        offsetY += dragAmount.y
+                    }
+                }
+            )
         }
     }
-    Box(modifier = Modifier.size(16.dp)
-        .offset { IntOffset(offsetX.roundToInt(),offsetY.roundToInt())}
-        .background(Color.Blue)
-        .size(16.dp)
-        .border(2.dp, Color.Blue)
-        .pointerInput(Unit){
-            detectDragGestures { change, dragAmount ->
-                change.consume()
-                offsetX += dragAmount.x
-                offsetY += dragAmount.y
-            }
-        }
-    )
+//
+
 }
 
 @Preview
