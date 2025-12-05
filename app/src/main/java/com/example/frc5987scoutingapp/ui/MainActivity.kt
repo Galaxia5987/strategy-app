@@ -34,6 +34,12 @@ class MainActivity : ComponentActivity() {
                         composable("simulation_board") {
                             SimulationBoardScreen()
                         }
+                        composable("alliance_view") {
+                            AllianceView()
+                        }
+                        composable("best_allinace"){
+                            BestAllliance()
+                        }
                     }
                 }
             }
