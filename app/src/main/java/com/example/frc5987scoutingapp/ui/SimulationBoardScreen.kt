@@ -38,6 +38,7 @@ import com.example.frc5987scoutingapp.R
 import kotlin.math.roundToInt
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.rotate
 
 data class PathData(val points: List<Offset>, val color: Color)
 
@@ -47,12 +48,47 @@ fun SimulationBoardScreen() {
     val currentPathPoints = remember { mutableStateListOf<Offset>() }
     var drawColor by remember { mutableStateOf(Color.Black) }
     var isErasing by remember { mutableStateOf(false) }
+    var current_robot by remember { mutableStateOf(0) }
 
     val density = LocalDensity.current
-    val initialOffsetX = remember { with(density) { 350.dp.toPx() } }
-    val initialOffsetY = remember { with(density) { 170.dp.toPx() } }
-    var offsetX by remember { mutableFloatStateOf(initialOffsetX) }
-    var offsetY by remember { mutableFloatStateOf(initialOffsetY) }
+    val B1initialOffsetX = remember { with(density) { 252.dp.toPx() } }
+    val B1initialOffsetY = remember { with(density) { 235.dp.toPx() } }
+    var B1offsetX by remember { mutableFloatStateOf(B1initialOffsetX) }
+    var B1offsetY by remember { mutableFloatStateOf(B1initialOffsetY) }
+    val B2initialOffsetX = remember { with(density) { 205.dp.toPx() } }
+    val B2initialOffsetY = remember { with(density) { 342.dp.toPx() } }
+    var B2offsetX by remember { mutableFloatStateOf(B2initialOffsetX) }
+    var B2offsetY by remember { mutableFloatStateOf(B2initialOffsetY) }
+    val B3initialOffsetX = remember { with(density) { 158.dp.toPx() } }
+    val B3initialOffsetY = remember { with(density) { 447.dp.toPx() } }
+    var B3offsetX by remember { mutableFloatStateOf(B3initialOffsetX) }
+    var B3offsetY by remember { mutableFloatStateOf(B3initialOffsetY) }
+    val R1initialOffsetX = remember { with(density) { 324.dp.toPx() } }
+    val R1initialOffsetY = remember { with(density) { 235.dp.toPx() } }
+    var R1offsetX by remember { mutableFloatStateOf(R1initialOffsetX) }
+    var R1offsetY by remember { mutableFloatStateOf(R1initialOffsetY) }
+    val R2initialOffsetX = remember { with(density) { 278.dp.toPx() } }
+    val R2initialOffsetY = remember { with(density) { 342.dp.toPx() } }
+    var R2offsetX by remember { mutableFloatStateOf(R2initialOffsetX) }
+    var R2offsetY by remember { mutableFloatStateOf(R2initialOffsetY) }
+    val R3initialOffsetX = remember { with(density) { 232.dp.toPx() } }
+    val R3initialOffsetY = remember { with(density) { 447.dp.toPx() } }
+    var R3offsetX by remember { mutableFloatStateOf(R3initialOffsetX) }
+    var R3offsetY by remember { mutableFloatStateOf(R3initialOffsetY) }
+    val B1intialRotation = remember { with(density) { 0f } }
+    var B1rotation by remember { mutableFloatStateOf(B1intialRotation) }
+    val B2intialRotation = remember { with(density) { 0f} }
+    var B2rotation by remember { mutableFloatStateOf(B2intialRotation) }
+    val B3intialRotation = remember { with(density) { 0f } }
+    var B3rotation by remember { mutableFloatStateOf(B3intialRotation) }
+    val R1intialRotation = remember { with(density) { 0f } }
+    var R1rotation by remember { mutableFloatStateOf(R1intialRotation) }
+    val R2intialRotation = remember { with(density) { 0f } }
+    var R2rotation by remember { mutableFloatStateOf(R2intialRotation) }
+    val R3intialRotation = remember { with(density) { 0f } }
+    var R3rotation by remember { mutableFloatStateOf(R3intialRotation) }
+
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -130,6 +166,18 @@ fun SimulationBoardScreen() {
         IconButton(
             onClick = {
                 paths.clear()
+                B1offsetX = B1initialOffsetX
+                B1offsetY = B1initialOffsetY
+                B2offsetX = B2initialOffsetX
+                B2offsetY = B2initialOffsetY
+                B3offsetX = B3initialOffsetX
+                B3offsetY = B3initialOffsetY
+                R1offsetX = R1initialOffsetX
+                R1offsetY = R1initialOffsetY
+                R2offsetX = R2initialOffsetX
+                R2offsetY = R2initialOffsetY
+                R3offsetX = R3initialOffsetX
+                R3offsetY = R3initialOffsetY
             },
             modifier = Modifier.align(Alignment.TopEnd)
         ) {
@@ -185,23 +233,134 @@ fun SimulationBoardScreen() {
                     drawColor = Color.Transparent
                 }
             ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Gray, CircleShape).border(1.dp, Color.Black, CircleShape))
+                Box(modifier = Modifier.size(24.dp).background(Color.LightGray).border(1.dp, Color.Black))
             }
-
             Box(modifier = Modifier
-                .offset { IntOffset(offsetX.roundToInt(),offsetY.roundToInt())}
-                .background(Color.Blue)
-                .size(26.dp)
-                .border(2.dp, Color.Blue)
-                .clickable(onClick = {})
+                .offset { IntOffset(B1offsetX.roundToInt(),B1offsetY.roundToInt())}
+                .background(Color.DarkGray)
+                .size(46.dp)
+                .border(4.dp, Color.Blue)
+                .clickable(onClick = {current_robot = 1})
+                .rotate(B1rotation)
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        offsetX -= dragAmount.x
-                        offsetY += dragAmount.y
+                        B1offsetX += dragAmount.x
+                        B1offsetY += dragAmount.y
                     }
                 }
             )
+            Box(modifier = Modifier
+                .offset { IntOffset(B2offsetX.roundToInt(),B2offsetY.roundToInt())}
+                .background(Color.DarkGray)
+                .size(46.dp)
+                .border(4.dp, Color.Blue)
+                .clickable(onClick = {current_robot = 2})
+                .rotate(B2rotation)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        B2offsetX += dragAmount.x
+                        B2offsetY += dragAmount.y
+                    }
+                }
+            )
+            Box(modifier = Modifier
+                .offset { IntOffset(B3offsetX.roundToInt(),B3offsetY.roundToInt())}
+                .background(Color.DarkGray)
+                .size(46.dp)
+                .border(4.dp, Color.Blue)
+                .clickable(onClick = {current_robot = 3})
+                .rotate(B3rotation)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        B3offsetX += dragAmount.x
+                        B3offsetY += dragAmount.y
+                    }
+                }
+            )
+            Box(modifier = Modifier
+                .offset { IntOffset(R1offsetX.roundToInt(),R1offsetY.roundToInt())}
+                .background(Color.DarkGray)
+                .size(46.dp)
+                .border(4.dp, Color.Red)
+                .clickable(onClick = {current_robot = 4})
+                .rotate(R1rotation)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        R1offsetX += dragAmount.x
+                        R1offsetY += dragAmount.y
+                    }
+                }
+            )
+            Box(modifier = Modifier
+                .offset { IntOffset(R2offsetX.roundToInt(),R2offsetY.roundToInt())}
+                .background(Color.DarkGray)
+                .size(46.dp)
+                .border(4.dp, Color.Red)
+                .clickable(onClick = {current_robot = 5})
+                .rotate(R2rotation)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        R2offsetX += dragAmount.x
+                        R2offsetY += dragAmount.y
+                    }
+                }
+            )
+            Box(modifier = Modifier
+                .offset { IntOffset(R3offsetX.roundToInt(),R3offsetY.roundToInt())}
+                .background(Color.DarkGray)
+                .size(46.dp)
+                .border(4.dp, Color.Red)
+                .clickable(onClick = {current_robot = 6})
+                .rotate(R3rotation)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        R3offsetX += dragAmount.x
+                        R3offsetY += dragAmount.y
+                    }
+                }
+            )
+            IconButton( // blank button
+                onClick = {
+                    isErasing = false
+                    drawColor = Color.Transparent
+                }
+            ) {
+                Box(modifier = Modifier.size(24.dp).background(Color.Black).border(1.dp, Color.Black))
+            }
+            IconButton( //left rotation
+                onClick = {
+                    when (current_robot) {
+                        1 -> B1rotation -= 5f
+                        2 -> B2rotation -= 5f
+                        3 -> B3rotation -= 5f
+                        4 -> R1rotation -= 5f
+                        5 -> R2rotation -= 5f
+                        6 -> R3rotation -= 5f
+                    }
+                }
+            ) {
+                Box(modifier = Modifier.size(24.dp).background(Color.Red).border(1.dp, Color.Yellow))
+            }
+            IconButton( //right rotation
+                onClick = {
+                    when (current_robot) {
+                        1 -> B1rotation += 5f
+                        2 -> B2rotation += 5f
+                        3 -> B3rotation += 5f
+                        4 -> R1rotation += 5f
+                        5 -> R2rotation += 5f
+                        6 -> R3rotation += 5f
+                    }
+                }
+            ) {
+                Box(modifier = Modifier.size(24.dp).background(Color.Cyan).border(1.dp, Color.Yellow))
+            }
         }
     }
 //
@@ -213,3 +372,4 @@ fun SimulationBoardScreen() {
 private fun SimulationBoardScreenPreview() {
     SimulationBoardScreen()
 }
+

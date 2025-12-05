@@ -3,11 +3,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "teams")
-enum class teams (
+data class teams (
     @PrimaryKey val teamNumber: Int,
     val teamName: String,
     val teamCoachNotes: String,
-) {
-
-}
+)
 

@@ -1,48 +1,47 @@
 package com.example.frc5987scoutingapp.data.model
-
 import androidx.room.Entity
-import com.example.frc5987scoutingapp.data.model.scoringData.AUTON_L4_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.AUTON_L3_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.AUTON_L2_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.AUTON_L1_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.AUTON_LEAVE_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.TELEOP_L1_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.TELEOP_L2_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.TELEOP_L3_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.TELEOP_L4_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.TELEOP_NET_POINTS
-import com.example.frc5987scoutingapp.data.model.scoringData.TELEOP_PROCESSOR_POINTS
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "quickGameStats")
 
 
-@Entity(
-    tableName = "quickGameStats",
-    primaryKeys = ["teamNumber"]
+data class quickGameStats (
+    @PrimaryKey val teamNumber: Int,
+    val id: Int = 0,
+    val matchNumber: Int,
+
+//Autonomous
+    val A_L4Scored: Int,
+    val A_L4Failed: Int,
+    val A_L3Scored: Int,
+    val A_L3Failed: Int,
+    val A_L2Scored: Int,
+    val A_L2Failed: Int,
+    val A_L1Scored: Int,
+    val A_L1Failed: Int,
+    val A_NetScored: Int,
+    val A_NetFailed: Int,
+//Teleop
+    val T_L4Scored: Int,
+    val T_L4Failed: Int,
+    val T_L3Scored: Int,
+    val T_L3Failed: Int,
+    val T_L2Scored: Int,
+    val T_L2Failed: Int,
+    val T_L1Scored: Int,
+    val T_L1Failed: Int,
+    val T_ProcessorScored: Int,
+    val T_NetScored: Int,
+    val T_NetFailed:Int,
+
+
+//EndGame
+    val E_Climb: Boolean,
+//General
+    val G_DidDefence: Boolean,
+    val G_DefenceLevel: Int,
+    val G_WasDefended: Boolean,
+    val G_CopeWithDefence: Int,
+
 )
-
-
-class QuickGameStats(val teamNumber: Int, val full_game_data: gameData)
-{
-    val matchNumber: Int = full_game_data.D_MatchNumber
-
-    val A_Pointes: Int = if (!full_game_data.A_Leave) 0 else
-        AUTON_LEAVE_POINTS +
-                full_game_data.A_L4Scored *AUTON_L4_POINTS +
-                full_game_data.A_L3Scored *AUTON_L3_POINTS +
-                full_game_data.A_L2Scored *AUTON_L2_POINTS +
-                full_game_data.A_L1Scored *AUTON_L1_POINTS +
-                full_game_data.A_NetScored *AUTON_LEAVE_POINTS
-
-    val T_Pointes: Int =
-        full_game_data.T_L4Scored*TELEOP_L4_POINTS +
-                full_game_data.T_L3Scored*TELEOP_L3_POINTS +
-                full_game_data.T_L2Scored*TELEOP_L2_POINTS +
-                full_game_data.T_L1Scored*TELEOP_L1_POINTS +
-                full_game_data.T_ProcessorScored*TELEOP_PROCESSOR_POINTS +
-                full_game_data.T_NetScored*TELEOP_NET_POINTS
-
-    val DidClimbed: Boolean = full_game_data.E_Climb
-
-
-}
-
 
