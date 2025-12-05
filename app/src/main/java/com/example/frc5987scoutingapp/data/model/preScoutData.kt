@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "preScoutData",
-    //: הגדר ת המפתח הזר שמקשר לטבלת Team
+    //: הגדרת המפתח הזר שמקשר לטבלת Team
     foreignKeys = [ForeignKey(
         entity = teams::class,
         parentColumns = ["teamNumber"],

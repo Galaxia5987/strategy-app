@@ -7,8 +7,9 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.frc5987scoutingapp.data.model.teams
 import com.example.frc5987scoutingapp.data.model.gameData
-import com.example.frc5987scoutingapp.data.model.QuickGameStats
+import com.example.frc5987scoutingapp.data.model.quickGameStats
 import com.example.frc5987scoutingapp.data.model.preScoutData
+import com.example.frc5987scoutingapp.data.model.scoringData
 import kotlinx.coroutines.flow.Flow
 
 
@@ -25,8 +26,6 @@ interface teamDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTeam(team: teams)
 
-    @Query("SELECT * FROM quickGameStats WHERE teamNumber = :teamId")
-    suspend fun getScoutingDataForTeam(teamId: Int): List<QuickGameStats>
 
     @Query("SELECT * FROM teams")
     fun getAllTeamsData(): Flow<List<teams>>
