@@ -1,13 +1,8 @@
-package com.example.frc5987scoutingapp.ui.theme
+package com.example.frc5987scoutingapp.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.frc5987scoutingapp.R
-
 
 class allianceView {
 
@@ -19,6 +14,6 @@ class allianceView {
     @Preview
     @Composable
     private fun BoxPreview() {
-        
+
     }
 }
