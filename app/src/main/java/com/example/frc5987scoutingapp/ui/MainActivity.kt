@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                             AllianceView()
                         }
                         composable("best_allinace"){
-                            BestAllliance()
+                            BestAlliance()
                         }
                     }
                 }
