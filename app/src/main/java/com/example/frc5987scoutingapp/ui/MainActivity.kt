@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.frc5987scoutingapp.ui.theme.FRC5987ScoutingAppTheme
+import com.example.frc5987scoutingapp.ui.theme.allianceView
 
 
 class MainActivity : ComponentActivity() {
@@ -33,6 +34,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("simulation_board") {
                             SimulationBoardScreen()
+                        }
+                        composable("alliance_view") {
+                            allianceView()
+                        }
+                        composable("best_alliance") {
+                            BestAlliance()
                         }
                     }
                 }
