@@ -42,6 +42,8 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.engage.core)
     val roomVersion = "2.8.3"
     val lifecycle_version = "2.9.4"
     val arch_version = "2.2.0"
