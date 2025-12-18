@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class quickGameStats (
     @PrimaryKey val teamNumber: Int,
     val id: Int = 0,
-    val matchNumber: Int,
+    val matchNumber: Int = -1,
 
 //Autonomous
     val A_L4Scored: Int=0,
@@ -42,6 +42,6 @@ data class quickGameStats (
     val G_DefenceLevel: Int=0,
     val G_WasDefended: Boolean= false,
     val G_CopeWithDefence: Int=0,
-    val G_Note: Boolean= false ,
+    val G_Note: String= "" ,
 )
 

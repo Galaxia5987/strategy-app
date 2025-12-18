@@ -85,11 +85,60 @@ interface teamDao {
     """)
     fun getAutonomousScoreAverage(
         teamNumber: Int,
-        l4Points: Int,
-        l3Points: Int,
-        l2Points: Int,
-        l1Points: Int,
-        netPoints: Int,
-        leavePoints: Int
-    ): Flow<Double?>
+        l4Points: Int = scoringData.AUTON_L4_POINTS,
+        l3Points: Int = scoringData.AUTON_L3_POINTS,
+        l2Points: Int = scoringData.AUTON_L2_POINTS,
+        l1Points: Int = scoringData.AUTON_L1_POINTS,
+        netPoints: Int = scoringData.AUTON_NET_POINTS,
+        leavePoints: Int = scoringData.AUTON_LEAVE_POINTS
+    ): Flow<Int>
+
+    @Query("""
+        SELECT (
+            T_L4Scored * :l4Points + 
+            T_L3Scored * :l3Points + 
+            T_L2Scored * :l2Points + 
+            T_L1Scored * :l1Points + 
+            T_NetScored * :netPoints + 
+            T_ProcessorScored * :processorPoints +
+            CASE WHEN E_Climb IS TRUE THEN :climbPoints ELSE 0 END 
+        )
+        FROM GameData 
+        WHERE teamNumber = :teamNumber  AND D_MatchNumber = :matchNumber
+    """)
+    fun getTeleopAndEndGameScoreForMatch(
+        teamNumber: Int,
+        matchNumber: Int,
+        l4Points: Int = scoringData.TELEOP_L4_POINTS,
+        l3Points: Int = scoringData.TELEOP_L3_POINTS,
+        l2Points: Int = scoringData.TELEOP_L2_POINTS,
+        l1Points: Int = scoringData.TELEOP_L1_POINTS,
+        netPoints: Int = scoringData.TELEOP_NET_POINTS,
+        processorPoints: Int = scoringData.TELEOP_PROCESSOR_POINTS,
+        climbPoints: Int = scoringData.ENDGAME_CLIMB_POINTS
+    ): Flow<Int>
+
+    @Query("""
+        SELECT AVG(
+            T_L4Scored * :l4Points + 
+            T_L3Scored * :l3Points + 
+            T_L2Scored * :l2Points + 
+            T_L1Scored * :l1Points + 
+            T_NetScored * :netPoints + 
+            T_ProcessorScored * :processorPoints +
+            CASE WHEN E_Climb IS TRUE THEN :climbPoints ELSE 0 END 
+        )
+        FROM GameData 
+        WHERE teamNumber = :teamNumber
+    """)
+    fun getTeleopAndEndGameScoreAverage(
+        teamNumber: Int,
+        l4Points: Int = scoringData.TELEOP_L4_POINTS,
+        l3Points: Int = scoringData.TELEOP_L3_POINTS,
+        l2Points: Int = scoringData.TELEOP_L2_POINTS,
+        l1Points: Int = scoringData.TELEOP_L1_POINTS,
+        netPoints: Int = scoringData.TELEOP_NET_POINTS,
+        processorPoints: Int = scoringData.TELEOP_PROCESSOR_POINTS,
+        climbPoints: Int = scoringData.ENDGAME_CLIMB_POINTS
+    ): Flow<Int>
 }
