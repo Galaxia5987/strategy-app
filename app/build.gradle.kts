@@ -44,6 +44,7 @@ dependencies {
 
     implementation(libs.androidx.compose.foundation)
     implementation(libs.engage.core)
+    implementation(libs.androidx.compose.material3)
     val roomVersion = "2.8.3"
     val lifecycle_version = "2.9.4"
     val arch_version = "2.2.0"
@@ -66,6 +67,8 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-paging:$roomVersion:")
     implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation("androidx.compose.material3:material3:1.4.0")
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.0-alpha08") // Use the latest stable or compatible version
 
     ksp("androidx.room:room-compiler:$roomVersion")
 

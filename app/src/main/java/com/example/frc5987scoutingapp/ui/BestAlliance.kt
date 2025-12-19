@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +25,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -79,7 +81,10 @@ fun BestAlliance() {
                         thumbColor = color,
                         activeTrackColor = color
                     )
+
                 )
+
+
                 Spacer(modifier = Modifier.width(16.dp))
                 Box(
                     contentAlignment = Alignment.Center,
@@ -92,6 +97,11 @@ fun BestAlliance() {
                         color = MaterialTheme.colorScheme.onSecondary,
                     )
                 }
+                TextField(
+                    state = rememberTextFieldState(initialText = ""),
+                    label = { Text("Label") }
+                )
+
             }
         }
         Column(
