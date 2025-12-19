@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+﻿package com.example.frc5987scoutingapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.frc5987scoutingapp.ui.theme.FRC5987ScoutingAppTheme
+import com.example.frc5987scoutingapp.ui.allianceView
 
 
 class MainActivity : ComponentActivity() {
@@ -31,13 +32,13 @@ class MainActivity : ComponentActivity() {
                         composable("home_screen") {
                             MainScreenContent(navController = navController)
                         }
-                        composable("simulation_board") {
+                        composable("SimulationBoard") {
                             SimulationBoardScreen()
                         }
-                        composable("alliance_view") {
-                            AllianceView()
+                        composable("AllianceView") {
+                            allianceView()
                         }
-                        composable("best_allinace"){
+                        composable("BestAlliance") {
                             BestAlliance()
                         }
                     }
