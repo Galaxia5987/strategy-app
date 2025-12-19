@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -180,9 +181,10 @@ fun SimulationBoardScreen() {
                 R3offsetY = R3initialOffsetY
             },
             modifier = Modifier.align(Alignment.TopEnd)
+
         ) {
             Icon(
-                imageVector = Icons.Filled.Delete,
+                imageVector = Icons.Filled.Refresh,
                 contentDescription = "Clear drawings"
             )
         }
@@ -232,9 +234,15 @@ fun SimulationBoardScreen() {
                     isErasing = true
                     drawColor = Color.Transparent
                 }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.LightGray).border(1.dp, Color.Black))
+            )  {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    modifier = Modifier.size(24.dp),
+                    contentDescription = "Erase"
+                )
             }
+
+            // fake robots
             Box(modifier = Modifier
                 .offset { IntOffset(B1offsetX.roundToInt(),B1offsetY.roundToInt())}
                 .background(Color.DarkGray)
@@ -290,7 +298,7 @@ fun SimulationBoardScreen() {
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        R1offsetX += dragAmount.x
+                        R1offsetX -= dragAmount.x
                         R1offsetY += dragAmount.y
                     }
                 }
@@ -305,7 +313,7 @@ fun SimulationBoardScreen() {
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        R2offsetX += dragAmount.x
+                        R2offsetX -= dragAmount.x
                         R2offsetY += dragAmount.y
                     }
                 }
@@ -320,7 +328,7 @@ fun SimulationBoardScreen() {
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        R3offsetX += dragAmount.x
+                        R3offsetX -= dragAmount.x
                         R3offsetY += dragAmount.y
                     }
                 }
