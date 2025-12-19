@@ -3,7 +3,7 @@ package com.example.frc5987scoutingapp.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-
+/*
 class ViewModel : ViewModel() {
     private val _counter = MutableLiveData<Int>()
     val counter: LiveData<Int> = _counter
@@ -16,3 +16,4 @@ class ViewModel : ViewModel() {
     }
 
 }
+*/
