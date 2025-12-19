@@ -63,7 +63,7 @@ class teamRepository(private val teamDao: teamDao) {
 
     }
 
-    fun getAutonomousScoreAverage(teamNumber: Int): Flow<Double?> {
+    fun getAutonomousScoreAverage(teamNumber: Int): Flow<Int?> {
         return teamDao.getAutonomousScoreAverage(
             teamNumber = teamNumber,
             l4Points = scoringData.AUTON_L4_POINTS,

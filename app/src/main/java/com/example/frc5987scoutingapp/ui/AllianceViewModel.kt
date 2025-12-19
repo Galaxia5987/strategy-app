@@ -70,14 +70,11 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
 
 
         val scores = data.map { stats ->
-            val autoScore : Flow<Int> = teamDao.getAutonomousScoreAverage(teamNumber)
+            val autoScore : Flow<Int> = teamDao.getAutonomousScoreForMatch(teamNumber)
 
-            val teleopScore = quickGameStats.T_Pointes
+            val teleopScore : Flow<Int> = teamDao.getTeleopAndEndGameScoreForMatch(teamNumber)
 
-            val DidScore = quickGameStats.endClimb
-
-
-            Triple(autoScore, teleopScore, autoScore + teleopScore + endScore)
+            Triple(autoScore, teleopScore, autoScore + teleopScore)
         }
 
         val avgAutoScore = scores.map { it.first() }.average()
