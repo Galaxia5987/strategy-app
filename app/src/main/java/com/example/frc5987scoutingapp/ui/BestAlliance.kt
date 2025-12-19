@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -64,6 +65,7 @@ fun BestAlliance() {
         @Composable
         fun MySlider(color: Color, num: Int) {
             var sliderPosition by remember { mutableFloatStateOf(1f) }
+            var textValue by remember { mutableStateOf(sliderPosition.toInt().toString()) }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(horizontal = 24.dp)
@@ -73,6 +75,7 @@ fun BestAlliance() {
                     value = sliderPosition,
                     onValueChange = {
                         sliderPosition = it
+                        textValue = it.toInt().toString()
                         parameters[num] = it.toInt()
                     },
                     valueRange = 1f..10f,
@@ -89,18 +92,31 @@ fun BestAlliance() {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .size(40.dp)
+                        .height(80.dp)
+                        .width(120.dp)
+                        .padding(4.dp)
                         .background(color, CircleShape)
                 ) {
-                    Text(
-                        text = sliderPosition.toInt().toString(),
-                        color = MaterialTheme.colorScheme.onSecondary,
+                    OutlinedTextField(
+                        value = textValue,
+                        onValueChange = { newValue ->
+                            textValue = newValue
+                            val newFloatValue = newValue.toFloatOrNull()
+                            if (newFloatValue != null && newFloatValue in 1f..10f) {
+                                sliderPosition = newFloatValue
+                                parameters[num] = newFloatValue.toInt()
+                            }
+                        },
+                        label = { Text("Value") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        modifier = Modifier.width(80.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = sliderColors[7-num],
+                            unfocusedTextColor = sliderColors[7-num],
+                        )
                     )
+
                 }
-                TextField(
-                    state = rememberTextFieldState(initialText = ""),
-                    label = { Text("Label") }
-                )
 
             }
         }
@@ -113,9 +129,10 @@ fun BestAlliance() {
             Spacer(modifier = Modifier.height(50.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "STRATEGY",
+                    text = "STARTEGY",
                     color = Color(0xFF1353C7),
                     fontSize = 100.sp
+
                 )
                 Image(
                     painter = painterResource(id = R.drawable.galaxia_logo),
@@ -136,11 +153,24 @@ fun BestAlliance() {
             MySlider(sliderColors[7], 7)
 
             TextButton(
+                modifier = Modifier
+                    .height(800.dp)
+                    .width(120.dp),
                 onClick = {
                     showSortRobots = true
                 }
             ) {
-                Text("next")
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        "next",
+                        fontSize = 40.sp,
+                        modifier = Modifier.padding(top = 100.dp)
+                    )
+                }
             }
         }
     } else {
