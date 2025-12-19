@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
-class allianceView {
+class AllianceView {
 
     @Composable
     fun Box(modifier: Modifier) {
