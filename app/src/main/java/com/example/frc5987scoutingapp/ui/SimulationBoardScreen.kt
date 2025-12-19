@@ -245,7 +245,7 @@ fun SimulationBoardScreen() {
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        B1offsetX += dragAmount.x
+                        B1offsetX -= dragAmount.x
                         B1offsetY += dragAmount.y
                     }
                 }
@@ -260,7 +260,7 @@ fun SimulationBoardScreen() {
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        B2offsetX += dragAmount.x
+                        B2offsetX -= dragAmount.x
                         B2offsetY += dragAmount.y
                     }
                 }
@@ -336,12 +336,12 @@ fun SimulationBoardScreen() {
             IconButton( //left rotation
                 onClick = {
                     when (current_robot) {
-                        1 -> B1rotation -= 5f
-                        2 -> B2rotation -= 5f
-                        3 -> B3rotation -= 5f
-                        4 -> R1rotation -= 5f
-                        5 -> R2rotation -= 5f
-                        6 -> R3rotation -= 5f
+                        1 -> B1rotation += 5f
+                        2 -> B2rotation += 5f
+                        3 -> B3rotation += 5f
+                        4 -> R1rotation += 5f
+                        5 -> R2rotation += 5f
+                        6 -> R3rotation += 5f
                     }
                 }
             ) {
@@ -350,12 +350,12 @@ fun SimulationBoardScreen() {
             IconButton( //right rotation
                 onClick = {
                     when (current_robot) {
-                        1 -> B1rotation += 5f
-                        2 -> B2rotation += 5f
-                        3 -> B3rotation += 5f
-                        4 -> R1rotation += 5f
-                        5 -> R2rotation += 5f
-                        6 -> R3rotation += 5f
+                        1 -> B1rotation -= 5f
+                        2 -> B2rotation -= 5f
+                        3 -> B3rotation -= 5f
+                        4 -> R1rotation -= 5f
+                        5 -> R2rotation -= 5f
+                        6 -> R3rotation -= 5f
                     }
                 }
             ) {

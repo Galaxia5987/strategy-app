@@ -26,13 +26,13 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "home_screen",
+                        startDestination = "HomeScreen",
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable("home_screen") {
+                        composable("HomeScreen") {
                             MainScreenContent(navController = navController)
                         }
-                        composable("SimulationBoard") {
+                        composable("SimulationBoardScreen") {
                             SimulationBoardScreen()
                         }
                         composable("AllianceView") {
