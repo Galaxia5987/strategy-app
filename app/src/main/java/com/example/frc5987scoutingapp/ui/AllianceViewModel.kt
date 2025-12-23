@@ -112,7 +112,7 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
 }
 
 }
-*/
+
 
 class AllianceViewModelFactory(private val dao: teamDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -123,3 +123,4 @@ class AllianceViewModelFactory(private val dao: teamDao) : ViewModelProvider.Fac
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+*/
