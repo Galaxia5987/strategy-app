@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "quickGameStats")
 data class quickGameStats(
-    @PrimaryKey val teamNumber: Int,
+    @PrimaryKey (autoGenerate = true)
+    val teamNumber: Int,
     val autoScore: Double = 0.0,
     val avgTeleopScore: Double = 0.0,
     val avgTotalScore: Double = 0.0,

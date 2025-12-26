@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.frc5987scoutingapp.data.model.teams
+import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.gameData
 import com.example.frc5987scoutingapp.data.model.preScoutData
-
-
+import com.example.frc5987scoutingapp.data.model.teams
 
 
 @Database(
@@ -18,7 +17,7 @@ import com.example.frc5987scoutingapp.data.model.preScoutData
 )
 abstract class scoutingDatabase : RoomDatabase() {
 
-
+    abstract fun teamDao(): teamDao
 
     companion object {
         @Volatile
@@ -41,5 +40,3 @@ abstract class scoutingDatabase : RoomDatabase() {
         }
     }
 }
-
-
