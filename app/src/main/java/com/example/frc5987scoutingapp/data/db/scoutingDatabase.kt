@@ -8,8 +8,7 @@ import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.teams
 import com.example.frc5987scoutingapp.data.model.gameData
 import com.example.frc5987scoutingapp.data.model.preScoutData
-
-
+import com.example.frc5987scoutingapp.data.model.teams
 
 
 

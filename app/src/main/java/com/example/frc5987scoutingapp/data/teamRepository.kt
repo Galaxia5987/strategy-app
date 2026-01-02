@@ -36,9 +36,9 @@ class teamRepository(private val teamDao: teamDao) {
         return teamDao.getTeamMatchesCount(teamNumber)
     }
 
-    /*fun getAllpreScoutData(): Flow<List<preScoutData>> {
-        return teamDao.getAllpreScoutData()
-    }*/
+  //  fun getAllpreScoutData(): Flow<List<preScoutData>> {
+  //      return teamDao.getAllpreScoutData()
+  //  }
 
     fun teamSucssesScoringRate(teamNumber: Int): Flow<List<gameData>> {
         return teamDao.teamSucssesScoringRate(teamNumber)
