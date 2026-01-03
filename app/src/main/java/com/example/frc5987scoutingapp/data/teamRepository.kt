@@ -1,18 +1,15 @@
 package com.example.frc5987scoutingapp.data
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.teams
-import com.example.frc5987scoutingapp.data.model.gameData
-import com.example.frc5987scoutingapp.data.model.preScoutData
-import com.example.frc5987scoutingapp.data.model.scoringData
+import com.example.frc5987scoutingapp.data.model.GameData
+import com.example.frc5987scoutingapp.data.model.enums.scoringData
 import kotlinx.coroutines.flow.Flow
 
 class teamRepository(private val teamDao: teamDao) {
 
 
-    suspend fun insertGameData(gameData: gameData) {
+    suspend fun insertGameData(gameData: GameData) {
         teamDao.insertGameData(gameData)
     }
 
@@ -24,7 +21,7 @@ class teamRepository(private val teamDao: teamDao) {
         teamDao.insertTeam(team)
     }
 
-    fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<gameData>> {
+    fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<GameData>> {
         return teamDao.getAllGameDataForTeamX(teamNumber)
     }
 
@@ -40,11 +37,11 @@ class teamRepository(private val teamDao: teamDao) {
   //      return teamDao.getAllpreScoutData()
   //  }
 
-    fun teamSucssesScoringRate(teamNumber: Int): Flow<List<gameData>> {
+    fun teamSucssesScoringRate(teamNumber: Int): Flow<List<GameData>> {
         return teamDao.teamSucssesScoringRate(teamNumber)
     }
 
-    fun teamsMatchSucssesScoringRate(teamNumber: Int, D_MatchNumber: Int): Flow<List<gameData>> {
+    fun teamsMatchSucssesScoringRate(teamNumber: Int, D_MatchNumber: Int): Flow<List<GameData>> {
         return teamDao.teamsMatchSucssesScoringRate(teamNumber, D_MatchNumber)
     }
 

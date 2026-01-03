@@ -43,6 +43,9 @@ class MainActivity : ComponentActivity() {
                         composable("AllianceView") {
                             AllianceView(allianceViewModel)
                         }
+                        composable("QRinsert") {
+                            QRinsert()
+                        }
                         composable("BestAlliance") {
                             TODO()
                         }

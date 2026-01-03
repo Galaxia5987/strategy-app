@@ -5,13 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.frc5987scoutingapp.data.DAO.teamDao
-import com.example.frc5987scoutingapp.data.model.gameData
+import com.example.frc5987scoutingapp.data.model.GameData
 import com.example.frc5987scoutingapp.data.model.preScoutData
 import com.example.frc5987scoutingapp.data.model.teams
 
 
 @Database(
-    entities = [teams::class, gameData::class, preScoutData::class],
+    entities = [teams::class, GameData::class, preScoutData::class],
     version = 1,
     exportSchema = false
 )
