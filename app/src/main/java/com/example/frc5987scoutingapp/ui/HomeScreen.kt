@@ -89,9 +89,11 @@ fun NavigationButtonsColumn(navController: NavController) {
         AppButton(text = "סימולציית לוח משחק") {
             navController.navigate("SimulationBoardScreen")
         }
-        AppButton(text = "תכנון משחק עתידי") { /* TODO */ }
         AppButton(text = "ALLIANCE VIEW") {
             navController.navigate("AllianceView")
+        }
+        AppButton(text = "הוספת נתוני משחק") {
+            navController.navigate("QRinsert")
         }
         AppButton(text = "בחירת ברית") {
             navController.navigate("BestAlliance")

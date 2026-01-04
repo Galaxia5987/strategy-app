@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.data.model
+package com.example.frc5987scoutingapp.data.model.enums
 
 object scoringData {
 
