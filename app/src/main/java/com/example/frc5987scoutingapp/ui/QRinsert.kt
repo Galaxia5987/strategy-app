@@ -10,15 +10,15 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 @Composable
-fun QRinsert() {
+fun QRinsert(allianceViewModel: AllianceViewModel) {
     Box {
-        startQRCamera(context = LocalContext.current)
+        startQRCamera(context = LocalContext.current, allianceViewModel=allianceViewModel)
     }
 
 }
 
 
-fun startQRCamera(context : Context) {
+fun startQRCamera(context : Context, allianceViewModel: AllianceViewModel) {
     val options = GmsBarcodeScannerOptions.Builder()
         .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
         .enableAutoZoom() // Requires version 16.1.0+
@@ -29,9 +29,10 @@ fun startQRCamera(context : Context) {
 // Trigger this from a Button or UI event
     scanner.startScan()
         .addOnSuccessListener { barcode ->
-            val result: Array<String> = barcode.rawValue?.split("")?.toTypedArray() ?: arrayOf("")
+            val result: Array<String> = barcode.rawValue?.split("\t")?.toTypedArray() ?: arrayOf("")
             val gameData = GameData.createFromArray(result)
-            println(gameData)
+            allianceViewModel.insertGameData(gameData)
+
             // Handle result
         }
         .addOnCanceledListener {

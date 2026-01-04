@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.frc5987scoutingapp.data.DAO.teamDao
+import com.example.frc5987scoutingapp.data.model.GameData
+import com.example.frc5987scoutingapp.data.model.enums.EndPosition
 import com.example.frc5987scoutingapp.data.model.quickGameStats
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -41,17 +43,17 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
 
         viewModelScope.launch {
             val avgAutoScoreFlow = teamDao.getAutonomousScoreAverage(teamId)
-            val avgTeleopScoreFlow = teamDao.getTeleopAndEndGameScoreAverage(teamId)
+            val avgTeleopScoreFlow = teamDao.getTeleopScoreAverage(teamId)
             val gameDataFlow = teamDao.getAllGameDataForTeamX(teamId)
 
             combine(avgAutoScoreFlow, avgTeleopScoreFlow, gameDataFlow) { avgAuto, avgTeleop, gameDataList ->
                 if (gameDataList.isEmpty()) {
                     quickGameStats(teamNumber = teamId, generalNote = "אין נתונים זמינים")
                 } else {
-                    val successfulClimbs = gameDataList.count { it.E_Climb }
+                    val successfulClimbs = gameDataList.count { !(it.endPosition == EndPosition.No || it.endPosition == EndPosition.Fc)}
                     val climbPercentage = if (gameDataList.isNotEmpty()) (successfulClimbs.toDouble() / gameDataList.size.toDouble()) * 100 else 0.0
 
-                    val avgDefenceLevel = gameDataList.map { it.G_DefenceLevel }.average().roundToInt()
+                    val avgDefenceLevel = gameDataList.map { it.defenseSkills }.average().roundToInt()
                     val note = "ממוצע רמת הגנה: $avgDefenceLevel"
 
                     val totalAvgScore = avgAuto.toDouble() + avgTeleop.toDouble()
@@ -81,6 +83,14 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
             AlliancePosition.RED_3 -> _redTeam3.postValue(summary)
         }
     }
+
+    fun insertGameData(gameData: GameData) {
+        viewModelScope.launch {
+            teamDao.insertGameData(gameData)
+        }
+    }
+
+
 }
 
 class AllianceViewModelFactory(private val dao: teamDao) : ViewModelProvider.Factory {

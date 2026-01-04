@@ -22,7 +22,7 @@ import com.example.frc5987scoutingapp.data.model.enums.robotPosition
 )
 data class GameData(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int,
 
     //PreMatch
     val scouter: String = "",
@@ -102,15 +102,14 @@ data class GameData(
                 t_processorAlgae = array[24].toInt(),
                 t_didDefance = array[25].toBoolean(),
                 t_wasDefended = array[26].toBoolean(),
-                t_foul = array[27].toInt(),
-                t_touchedOpposingCage = array[28].toInt(),
-                endPosition = EndPosition.valueOf(array[29]),
-                died = array[30].toBoolean(),
-                fellOver = array[31].toBoolean(),
-                offenseSkills = array[32].toInt(),
-                defenseSkills = array[33].toInt(),
-                cards = Cards.valueOf(array[34].replace(" ", "_")),
-                comments = array[35]
+                t_touchedOpposingCage  = array[27].toInt(),
+                endPosition = EndPosition.valueOf(array[28]),
+                died = array[29].toBoolean(),
+                fellOver = array[30].toBoolean(),
+                offenseSkills = array[31].toInt(),
+                defenseSkills = array[32].toInt(),
+                cards = Cards.valueOf(array[33].replace(" ", "_")),
+                comments = array[34]
             )
     }
 }

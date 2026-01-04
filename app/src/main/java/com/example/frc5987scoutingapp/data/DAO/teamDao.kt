@@ -29,7 +29,7 @@ interface teamDao {
     @Query("SELECT * FROM teams")
     fun getAllTeamsData(): Flow<List<teams>>
 
-    @Query("SELECT * FROM gameData WHERE teamNumber = :teamNumber ORDER BY MatchNumber ASC")
+    @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber ORDER BY MatchNumber ASC")
     fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<GameData>>
 
     @Query("SELECT COUNT(MatchNumber) FROM GameData WHERE teamNumber = :teamNumber")
@@ -38,25 +38,25 @@ interface teamDao {
   //  @Query("SELECT * FROM QuickGameStats")
   //  fun getAllpreScoutData(): Flow<List<preScoutData>>
 
-    @Query("SELECT * FROM gameData WHERE teamNumber = :teamNumber")
+    @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber")
     fun teamSucssesScoringRate(teamNumber: Int): Flow<List<GameData>>
 
-    @Query("SELECT * FROM gameData WHERE teamNumber = :teamNumber & MatchNumber = :D_MatchNumber")
+    @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber & MatchNumber = :D_MatchNumber")
     fun teamsMatchSucssesScoringRate(teamNumber: Int, D_MatchNumber: Int): Flow<List<GameData>>
 
     @Query(
         """
         SELECT 
         (
-            A_L4Scored * :l4Points + 
-            A_L3Scored * :l3Points + 
-            A_L2Scored * :l2Points +
-            A_L1Scored * :l1Points +
-            A_NetScored * :netPoints +
-            CASE WHEN A_Leave IS TRUE THEN :leavePoints ELSE 0 END
+            a_l4Scored * :l4Points + 
+            a_l3Scored * :l3Points + 
+            a_l2Scored * :l2Points +
+            a_l1Scored * :l1Points +
+            a_bargeAlgae * :netPoints +
+            CASE WHEN moved IS TRUE THEN :leavePoints ELSE 0 END
         ) 
         FROM GameData 
-        WHERE teamNumber = :teamNumber AND D_MatchNumber = :matchNumber
+        WHERE teamNumber = :teamNumber AND MatchNumber = :matchNumber
     """
     )
     fun getAutonomousScoreForMatch(
@@ -72,12 +72,12 @@ interface teamDao {
 
     @Query("""
         SELECT AVG(
-            A_L4Scored * :l4Points + 
-            A_L3Scored * :l3Points + 
-            A_L2Scored * :l2Points + 
-            A_L1Scored * :l1Points + 
-            A_NetScored * :netPoints +
-            CASE WHEN A_Leave IS TRUE THEN :leavePoints ELSE 0 END
+            a_l4Scored * :l4Points + 
+            a_l3Scored * :l3Points + 
+            a_l2Scored * :l2Points +
+            a_l1Scored * :l1Points +
+            a_bargeAlgae * :netPoints +
+            CASE WHEN moved IS TRUE THEN :leavePoints ELSE 0 END
         )
         FROM GameData 
         WHERE teamNumber = :teamNumber
@@ -94,18 +94,17 @@ interface teamDao {
 
     @Query("""
         SELECT (
-            T_L4Scored * :l4Points + 
-            T_L3Scored * :l3Points + 
-            T_L2Scored * :l2Points +
-            T_L1Scored * :l1Points +
-            T_NetScored * :netPoints +
-            T_ProcessorScored * :processorPoints +
-            CASE WHEN E_Climb IS TRUE THEN :climbPoints ELSE 0 END
+            t_l4Scored * :l4Points + 
+            t_l3Scored * :l3Points + 
+            t_l2Scored * :l2Points +
+            t_l1Scored * :l1Points +
+            t_bargeAlgae * :netPoints +
+            t_processorAlgae * :processorPoints 
         )
         FROM GameData 
-        WHERE teamNumber = :teamNumber  AND D_MatchNumber = :matchNumber
+        WHERE teamNumber = :teamNumber  AND MatchNumber = :matchNumber
     """)
-    fun getTeleopAndEndGameScoreForMatch(
+    fun getTeleopScoreForMatch(
         teamNumber: Int,
         matchNumber: Int,
         l4Points: Int = scoringData.TELEOP_L4_POINTS,
@@ -114,23 +113,21 @@ interface teamDao {
         l1Points: Int = scoringData.TELEOP_L1_POINTS,
         netPoints: Int = scoringData.TELEOP_NET_POINTS,
         processorPoints: Int = scoringData.TELEOP_PROCESSOR_POINTS,
-        climbPoints: Int = scoringData.ENDGAME_CLIMB_POINTS
     ): Flow<Int>
 
     @Query("""
         SELECT AVG(
-            T_L4Scored * :l4Points + 
-            T_L3Scored * :l3Points + 
-            T_L2Scored * :l2Points + 
-            T_L1Scored * :l1Points +
-            T_NetScored * :netPoints +
-            T_ProcessorScored * :processorPoints +
-            CASE WHEN E_Climb IS TRUE THEN :climbPoints ELSE 0 END
+             t_l4Scored * :l4Points + 
+            t_l3Scored * :l3Points + 
+            t_l2Scored * :l2Points +
+            t_l1Scored * :l1Points +
+            t_bargeAlgae * :netPoints +
+            t_processorAlgae * :processorPoints 
         )
         FROM GameData 
         WHERE teamNumber = :teamNumber
     """)
-    fun getTeleopAndEndGameScoreAverage(
+    fun getTeleopScoreAverage(
         teamNumber: Int,
         l4Points: Int = scoringData.TELEOP_L4_POINTS,
         l3Points: Int = scoringData.TELEOP_L3_POINTS,
@@ -138,7 +135,6 @@ interface teamDao {
         l1Points: Int = scoringData.TELEOP_L1_POINTS,
         netPoints: Int = scoringData.TELEOP_NET_POINTS,
         processorPoints: Int = scoringData.TELEOP_PROCESSOR_POINTS,
-        climbPoints: Int = scoringData.ENDGAME_CLIMB_POINTS
     ):
      Flow<Int>
 
