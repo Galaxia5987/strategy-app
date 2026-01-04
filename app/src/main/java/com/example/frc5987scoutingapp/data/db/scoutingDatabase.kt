@@ -10,6 +10,7 @@ import com.example.frc5987scoutingapp.data.model.preScoutData
 import com.example.frc5987scoutingapp.data.model.teams
 
 
+
 @Database(
     entities = [teams::class, GameData::class, preScoutData::class],
     version = 1,
