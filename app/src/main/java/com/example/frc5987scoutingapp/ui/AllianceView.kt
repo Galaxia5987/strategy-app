@@ -1,7 +1,17 @@
 package com.example.frc5987scoutingapp.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -13,6 +23,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
@@ -21,6 +32,20 @@ import java.text.DecimalFormat
 
 @Composable
 fun AllianceView(viewModel: AllianceViewModel) {
+    val insertionResult by viewModel.insertionResult.observeAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(insertionResult) {
+        insertionResult?.let {
+            if (it.isSuccess) {
+                Toast.makeText(context, "Data saved successfully!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Failed to save data: ${it.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
+            }
+            viewModel.onInsertionComplete()
+        }
+    }
+
     Row(modifier = Modifier.fillMaxSize()) {
         // Red Alliance
         Column(

@@ -77,11 +77,11 @@ data class GameData(
                id = 0,
                 scouter = array[0],
                 matchNumber = array[1].toInt(),
-                robotAlliance = RobotAlliance.valueOf(array[2]),
+                robotAlliance = enumValueOf(array[2], RobotAlliance.None),
                 teamNumber = array[3].toInt(),
-                startingPosition = robotPosition.valueOf(array[4]),
+                startingPosition = enumValueOf(array[4], robotPosition.None),
                 noShow = array[5].toBoolean(),
-                cagePosition = CagePosition.valueOf(array[6]),
+                cagePosition = enumValueOf(array[6], CagePosition.None),
                 moved = array[7].toBoolean(),
                 timer = array[8].toDouble(),
                 a_l1Scored = array[9].toInt(),
@@ -93,7 +93,7 @@ data class GameData(
                 a_removedAlgae = array[15].toBoolean(),
                 a_foul = array[16].toInt(),
                 t_removedAlgae = array[17].toBoolean(),
-                pickUpOptions = PickUpOptions.valueOf("_" + array[18]),
+                pickUpOptions = enumValueOf("_" + array[18], PickUpOptions._1),
                 t_l1Scored = array[19].toInt(),
                 t_l2Scored = array[20].toInt(),
                 t_l3Scored = array[21].toInt(),
@@ -103,80 +103,21 @@ data class GameData(
                 t_didDefance = array[25].toBoolean(),
                 t_wasDefended = array[26].toBoolean(),
                 t_touchedOpposingCage  = array[27].toInt(),
-                endPosition = EndPosition.valueOf(array[28]),
+                endPosition = enumValueOf(array[28], EndPosition.No),
                 died = array[29].toBoolean(),
                 fellOver = array[30].toBoolean(),
                 offenseSkills = array[31].toInt(),
                 defenseSkills = array[32].toInt(),
-                cards = Cards.valueOf(array[33].replace(" ", "_")),
+                cards = enumValueOf(array[33].replace(" ", "_"), Cards.No_Card),
                 comments = array[34]
             )
+
+        private inline fun <reified T : Enum<T>> enumValueOf(name: String, default: T): T {
+            return try {
+                java.lang.Enum.valueOf(T::class.java, name)
+            } catch (e: IllegalArgumentException) {
+                default
+            }
+        }
     }
 }
-
-
-    /*
-    @PrimaryKey(autoGenerate = true)
-
-    //val id: Int = 0,
-    //val matchNumber: Int,
-    val teamNumber: Int,            // זה המפתח קישור
-
-    //
-
-    val scoutNotes: String,
-
-    val D_ScouterID: String,
-    val D_ScouterName: String,
-    val D_ScouterTeam: String,
-    //val D_TeamNumber - נמצא בטבלה אבל כבר נמצא בדאטאבייס כמפתח זר
-    val D_MatchNumber: Int,
-    val D_Played: Boolean,
-//Autonomous
-    val A_StartingPosition: String,
-    val A_Leave: Boolean,
-    val A_L4Scored: Int,
-    val A_L4Failed: Int,
-    val A_L3Scored: Int,
-    val A_L3Failed: Int,
-    val A_L2Scored: Int,
-    val A_L2Failed: Int,
-    val A_L1Scored: Int,
-    val A_L1Failed: Int,
-    val A_NetScored: Int,
-    val A_NetFailed: Int,
-    val A_RemovedAlgae: Int,
-    val A_CollectionZones: String,
-//Teleop
-    val T_L4Scored: Int,
-    val T_L4Failed: Int,
-    val T_L3Scored: Int,
-    val T_L3Failed: Int,
-    val T_L2Scored: Int,
-    val T_L2Failed: Int,
-    val T_L1Scored: Int,
-    val T_L1Failed: Int,
-    val T_ProcessorScored: Int,
-    val T_NetScored: Int,
-    val T_NetFailed:Int,
-    val T_StolenAlgae: Int,
-//EndGame
-    val E_Climb: Boolean,
-//General
-    val G_AlgaeInReef: String,
-    val G_AlgaeFloorCollect: Boolean,
-    val G_CoralFloorCollect: Boolean,
-    val G_TouchedCage: Boolean,
-    val G_DidDefence: Boolean,
-    val G_DefenceLevel: Int,
-    val G_WasDefended: Boolean,
-    val G_CopeWithDefence: Int,
-    val G_DrivingLevel: Int,
-    val G_Stuck: Boolean,
-    val G_Foulist: Boolean,
-    val G_Comments: String,
-    val AppVersion: String,
-    val TimeStamp: String,
-    val FormID: Int,
-
-) */

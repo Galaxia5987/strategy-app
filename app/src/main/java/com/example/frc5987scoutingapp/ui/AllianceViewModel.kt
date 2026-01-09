@@ -1,24 +1,20 @@
 package com.example.frc5987scoutingapp.ui
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-/*
-class ViewModel : ViewModel() {
-    private val _counter = MutableLiveData<Int>()
-    val counter: LiveData<Int> = _counter
-    init {
-        _counter.value = 0
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.GameData
 import com.example.frc5987scoutingapp.data.model.enums.EndPosition
+import com.example.frc5987scoutingapp.data.model.enums.scoringData
 import com.example.frc5987scoutingapp.data.model.quickGameStats
+import com.example.frc5987scoutingapp.data.model.teams
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-import kotlin.collections.map
-import kotlinx.coroutines.flow.Flow
-
 
 enum class AlliancePosition {
     BLUE_1, BLUE_2, BLUE_3,
@@ -41,94 +37,69 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
     private val _redTeam3 = MutableLiveData<quickGameStats?>()
     val redTeam3: LiveData<quickGameStats?> = _redTeam3
 
+    private val _insertionResult = MutableLiveData<Result<Unit>?>()
+    val insertionResult: LiveData<Result<Unit>?> = _insertionResult
 
-    /**
-     * @param teamId ה-ID של הקבוצה שנטען
-     * @param alliancePosition העמדה שצריך לעדכן (BLUE_1, RED_2, וכו')
-     */
+    private val observationJobs = mutableMapOf<AlliancePosition, Job>()
+
     fun loadTeamData(teamId: Int, alliancePosition: AlliancePosition) {
         if (teamId == 5987) {
-            val galaxiaSummary = quickGameStats(5987, G_Note = "קבוצתנו - Galaxia!")
+            observationJobs[alliancePosition]?.cancel()
+            val galaxiaSummary = quickGameStats(teamNumber = 5987, generalNote = "קבוצתנו - Galaxia!")
             updateAlliancePosition(alliancePosition, galaxiaSummary)
-            return
         }
 
-        viewModelScope.launch {
-            val avgAutoScoreFlow = teamDao.getAutonomousScoreAverage(teamId)
-            val avgTeleopScoreFlow = teamDao.getTeleopScoreAverage(teamId)
-            val gameDataFlow = teamDao.getAllGameDataForTeamX(teamId)
-
-            combine(avgAutoScoreFlow, avgTeleopScoreFlow, gameDataFlow) { avgAuto, avgTeleop, gameDataList ->
+        observationJobs[alliancePosition]?.cancel()
+        observationJobs[alliancePosition] = viewModelScope.launch {
+            teamDao.getAllGameDataForTeamX(teamId).collectLatest { gameDataList ->
                 if (gameDataList.isEmpty()) {
-                    quickGameStats(teamNumber = teamId, generalNote = "אין נתונים זמינים")
+                    updateAlliancePosition(alliancePosition, quickGameStats(teamNumber = teamId, generalNote = "אין נתונים זמינים"))
                 } else {
+                    val avgAuto = calculateAutoAverage(gameDataList)
+                    val avgTeleop = calculateTeleopAverage(gameDataList)
+                    
                     val successfulClimbs = gameDataList.count { !(it.endPosition == EndPosition.No || it.endPosition == EndPosition.Fc)}
-                    val climbPercentage = if (gameDataList.isNotEmpty()) (successfulClimbs.toDouble() / gameDataList.size.toDouble()) * 100 else 0.0
+                    val climbPercentage = (successfulClimbs.toDouble() / gameDataList.size) * 100
 
-                    val avgDefenceLevel = gameDataList.map { it.defenseSkills }.average().roundToInt()
+                    val avgDefenceLevel = gameDataList.map { it.defenseSkills }.average().let { if (it.isNaN()) 0 else it.roundToInt() }
                     val note = "ממוצע רמת הגנה: $avgDefenceLevel"
 
-                    val totalAvgScore = avgAuto.toDouble() + avgTeleop.toDouble()
-
-                    quickGameStats(
+                    updateAlliancePosition(alliancePosition, quickGameStats(
                         teamNumber = teamId,
-                        autoScore = avgAuto.toDouble(),
-                        avgTeleopScore = avgTeleop.toDouble(),
-                        avgTotalScore = totalAvgScore,
+                        autoScore = avgAuto,
+                        avgTeleopScore = avgTeleop,
+                        avgTotalScore = avgAuto + avgTeleop,
                         climbPercentage = climbPercentage,
                         generalNote = note
-                    )
+                    ))
                 }
-            }.collect { summary ->
-                updateAlliancePosition(alliancePosition, summary)
             }
-            val rawData = teamDao.getAllGameDataForTeamX(teamId)
-            val summary = calculateSummary(teamId, rawData as List<quickGameStats>)
-            updateAlliancePosition(alliancePosition, summary)
         }
     }
 
-    /**
-     * @param teamId
-     * @param data quickGameStats
-     * @return quickGameStats
-     * */
-    private fun calculateSummary(teamNumber: Int, data: List<quickGameStats>): quickGameStats {
-        if (data.isEmpty()) {
-            return quickGameStats(teamNumber , G_Note = "אין נתונים זמינים")
-        }
-
-
-        val scores = data.map { stats ->
-            val autoScore : Flow<Int> = teamDao.getAutonomousScoreForMatch(teamNumber)
-
-            val teleopScore : Flow<Int> = teamDao.getTeleopAndEndGameScoreForMatch(teamNumber)
-
-            Triple(autoScore, teleopScore, autoScore + teleopScore)
-        }
-
-        val avgAutoScore = scores.map { it.first() }.average()
-        val avgTeleopScore = scores.map { it.second }.average()
-        val avgTotalScore = scores.map { it.third }.average()
-
-        val successfulClimbs = data.count { it.endClimb }
-        val climbPercentage = (successfulClimbs.toDouble() / data.size.toDouble()) * 100
-
-        val avgDefenceLevel = data.map { it.defenceLevel }.average().roundToInt()
-        val note = " ממוצע רמת הגנה:  $avgDefenceLevel"
-
-
-        return quickGameStats(
-            teamNumber = teamNumber,
-            autoScore = avgAutoScore,
-            avgTeleopScore = avgTeleopScore,
-            avgTotalScore = avgTotalScore,
-            climbPercentage = climbPercentage,
-            generalNote = note
-        )
+    private fun calculateAutoAverage(list: List<GameData>): Double {
+        return list.map { 
+            (it.a_l4Scored * scoringData.AUTON_L4_POINTS) + 
+            (it.a_l3Scored * scoringData.AUTON_L3_POINTS) + 
+            (it.a_l2Scored * scoringData.AUTON_L2_POINTS) + 
+            (it.a_l1Scored * scoringData.AUTON_L1_POINTS) + 
+            (it.a_bargeAlgae * scoringData.AUTON_NET_POINTS) + 
+            (if (it.moved) scoringData.AUTON_LEAVE_POINTS else 0)
+        }.average().let { if (it.isNaN()) 0.0 else it }
     }
 
-    private fun updateAlliancePosition(position: AlliancePosition, summary: quickGameStats) {
+    private fun calculateTeleopAverage(list: List<GameData>): Double {
+        return list.map { 
+            (it.t_l4Scored * scoringData.TELEOP_L4_POINTS) + 
+            (it.t_l3Scored * scoringData.TELEOP_L3_POINTS) + 
+            (it.t_l2Scored * scoringData.TELEOP_L2_POINTS) + 
+            (it.t_l1Scored * scoringData.TELEOP_L1_POINTS) + 
+            (it.t_bargeAlgae * scoringData.TELEOP_NET_POINTS) + 
+            (it.t_processorAlgae * scoringData.TELEOP_PROCESSOR_POINTS)
+        }.average().let { if (it.isNaN()) 0.0 else it }
+    }
+
+    private fun updateAlliancePosition(position: AlliancePosition, summary: quickGameStats?) {
         when (position) {
             AlliancePosition.BLUE_1 -> _blueTeam1.postValue(summary)
             AlliancePosition.BLUE_2 -> _blueTeam2.postValue(summary)
@@ -136,21 +107,42 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
             AlliancePosition.RED_1 -> _redTeam1.postValue(summary)
             AlliancePosition.RED_2 -> _redTeam2.postValue(summary)
             AlliancePosition.RED_3 -> _redTeam3.postValue(summary)
-            else -> {}
         }
+    }
+
+    fun clearAllData() {
+        observationJobs.values.forEach { it.cancel() }
+        observationJobs.clear()
+        
+        _blueTeam1.postValue(null)
+        _blueTeam2.postValue(null)
+        _blueTeam3.postValue(null)
+        _redTeam1.postValue(null)
+        _redTeam2.postValue(null)
+        _redTeam3.postValue(null)
     }
 
     fun insertGameData(gameData: GameData) {
         viewModelScope.launch {
-            teamDao.insertGameData(gameData)
+            try {
+                val team = teamDao.getTeam(gameData.teamNumber)
+                if (team == null) {
+                    teamDao.insertTeam(teams(gameData.teamNumber, "Team ${gameData.teamNumber}", ""))
+                }
+                teamDao.insertGameData(gameData)
+                _insertionResult.postValue(Result.success(Unit))
+            } catch (e: Exception) {
+                _insertionResult.postValue(Result.failure(e))
+            }
         }
+    }
+
+    fun onInsertionComplete() {
+        _insertionResult.value = null
     }
 
 
 }
-
-}
-
 
 class AllianceViewModelFactory(private val dao: teamDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -161,4 +153,3 @@ class AllianceViewModelFactory(private val dao: teamDao) : ViewModelProvider.Fac
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-*/

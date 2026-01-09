@@ -98,6 +98,9 @@ fun NavigationButtonsColumn(navController: NavController) {
         AppButton(text = "בחירת ברית") {
             navController.navigate("BestAlliance")
         }
+        AppButton(text = "טבלת נתוני משחק") {
+            navController.navigate("GameDataTable")
+        }
     }
 }
 

@@ -44,9 +44,12 @@ class MainActivity : ComponentActivity() {
                             AllianceView(allianceViewModel)
                         }
                         composable("QRinsert") {
-                            QRinsert(allianceViewModel)
+                            QRinsert(allianceViewModel, navController)
                         }
                         composable("BestAlliance") {
+                            BestAlliance()
+                        }
+                        composable("GameDataTable") {
                             TODO()
                         }
                     }

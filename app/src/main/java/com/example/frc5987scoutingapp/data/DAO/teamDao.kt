@@ -25,6 +25,9 @@ interface teamDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTeam(team: teams)
 
+    @Query("SELECT * FROM teams WHERE teamNumber = :TeamNumber")
+    suspend fun getTeam(TeamNumber: Int): teams?
+
 
     @Query("SELECT * FROM teams")
     fun getAllTeamsData(): Flow<List<teams>>

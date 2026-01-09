@@ -2,242 +2,186 @@ package com.example.frc5987scoutingapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.frc5987scoutingapp.R
 import com.example.frc5987scoutingapp.data.db.scoutingDatabase
 
-var showSortRobots by mutableStateOf(false)
-
 @Composable
 fun BestAlliance() {
-
-    val parameters = remember { intArrayOf(0, 0, 0, 0, 0, 0, 0, 0) }
     val context = LocalContext.current
     val viewModel: BestAllianceViewModel = viewModel(
         factory = BestAllianceViewModelFactory(scoutingDatabase.getDatabase(context).teamDao())
     )
 
+    var showSortRobots by rememberSaveable { mutableStateOf(false) }
+    val parameters = remember { mutableStateListOf(1, 1, 1, 1, 1, 1, 1, 1) }
+
     if (!showSortRobots) {
-        val sliderColors = listOf(
-            Color(0xFFBEE9FF),
-            Color(0xFF7AE0FF),
-            Color(0xFF2D93B2),
-            Color(0xFF397FFC),
-            Color(0xFF1353C7),
-            Color(0xFF032F83),
-            Color(0xFF02185D),
-            Color(0xFF000B36)
+        BestAllianceInputs(
+            parameters = parameters,
+            onNext = { showSortRobots = true }
         )
-
-        @Composable
-        fun MySlider(color: Color, num: Int, parameterType: String) {
-            var sliderPosition by remember { mutableFloatStateOf(1f) }
-            var textValue by remember { mutableStateOf(sliderPosition.toInt().toString()) }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            ) {
-                Slider(
-                    modifier = Modifier.weight(1f),
-                    value = sliderPosition,
-                    onValueChange = {
-                        sliderPosition = it
-                        textValue = it.toInt().toString()
-                        parameters[num] = it.toInt()
-                    },
-                    valueRange = 1f..10f,
-                    steps = 8,
-                    colors = SliderDefaults.colors(
-                        thumbColor = color,
-                        activeTrackColor = color
-                    )
-
-                )
-
-
-                Spacer(modifier = Modifier.width(16.dp))
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .height(80.dp)
-                        .width(120.dp)
-                        .padding(4.dp)
-                        .background(color, CircleShape)
-                ) {
-                    OutlinedTextField(
-                        value = textValue,
-                        onValueChange = { newValue ->
-                            textValue = newValue
-                            val newFloatValue = newValue.toFloatOrNull()
-                            if (newFloatValue != null && newFloatValue in 1f..10f) {
-                                sliderPosition = newFloatValue
-                                parameters[num] = newFloatValue.toInt()
-                            }
-                        },
-                        label = { Text(parameterType) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        modifier = Modifier.width(80.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = sliderColors[7-num],
-                            unfocusedTextColor = sliderColors[7-num],
-                        )
-                    )
-
-                }
-
-            }
-        }
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(50.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "STARTEGY",
-                    color = Color(0xFF1353C7),
-                    fontSize = 100.sp
-
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.galaxia_logo),
-                    contentDescription = "Galaxia Logo",
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(50.dp))
-            MySlider(sliderColors[0], 0, "autonomous score")
-            MySlider(sliderColors[1], 1, "teleop score")
-            MySlider(sliderColors[2], 2, "did climbed")
-            MySlider(sliderColors[3], 3, "net score")
-            MySlider(sliderColors[4], 4, "did parked")
-            MySlider(sliderColors[5], 5, "did played")
-            MySlider(sliderColors[6], 6, "defence")
-            MySlider(sliderColors[7], 7, "driving level")
-
-            TextButton(
-                modifier = Modifier
-                    .height(800.dp)
-                    .width(120.dp),
-                onClick = {
-                    showSortRobots = true
-                }
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        "next",
-                        fontSize = 40.sp,
-                        modifier = Modifier.padding(top = 100.dp)
-                    )
-                }
-            }
-        }
     } else {
-        SortRobots(parameters, viewModel)
+        SortRobots(
+            parameters = parameters.toIntArray(),
+            viewModel = viewModel,
+            onBack = { showSortRobots = false }
+        )
     }
 }
 
 @Composable
-fun SortRobots(parameters: IntArray, viewModel: BestAllianceViewModel) {
+fun BestAllianceInputs(
+    parameters: MutableList<Int>,
+    onNext: () -> Unit
+) {
+    val sliderColors = listOf(
+        Color(0xFFBEE9FF), Color(0xFF7AE0FF), Color(0xFF2D93B2), Color(0xFF397FFC),
+        Color(0xFF1353C7), Color(0xFF032F83), Color(0xFF02185D), Color(0xFF000B36)
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(30.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "STRATEGY", color = Color(0xFF1353C7), fontSize = 60.sp, fontWeight = FontWeight.Bold)
+            Image(
+                painter = painterResource(id = R.drawable.galaxia_logo),
+                contentDescription = "Galaxia Logo",
+                modifier = Modifier.size(80.dp)
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(30.dp))
+
+        val labels = listOf("Auto Score", "Teleop Score", "Climb", "Net", "Park", "Played", "Defense", "Driving")
+        labels.forEachIndexed { index, label ->
+            MySlider(
+                color = sliderColors[index],
+                value = parameters[index],
+                label = label,
+                onValueChange = { parameters[index] = it }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+        
+        Button(
+            onClick = onNext,
+            modifier = Modifier.fillMaxWidth(0.5f).height(60.dp)
+        ) {
+            Text("Next", fontSize = 24.sp)
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+    }
+}
+
+@Composable
+fun MySlider(color: Color, value: Int, label: String, onValueChange: (Int) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+    ) {
+        Slider(
+            modifier = Modifier.weight(1f),
+            value = value.toFloat(),
+            onValueChange = { onValueChange(it.toInt()) },
+            valueRange = 1f..10f,
+            steps = 8,
+            colors = SliderDefaults.colors(
+                thumbColor = color, 
+                activeTrackColor = color,
+                inactiveTrackColor = color.copy(alpha = 0.24f)
+            )
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+        
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(width = 100.dp, height = 60.dp)
+                .background(color, CircleShape)
+        ) {
+            Text(
+                text = "$value\n$label", 
+                fontSize = 11.sp, 
+                color = if (color.isDark()) Color.White else Color.Black, 
+                textAlign = TextAlign.Center,
+                lineHeight = 13.sp
+            )
+        }
+    }
+}
+
+// Extension to check if a color is dark (simple luminance check)
+fun Color.isDark(): Boolean {
+    val luminance = 0.299 * red + 0.587 * green + 0.114 * blue
+    return luminance < 0.5
+}
+
+@Composable
+fun SortRobots(parameters: IntArray, viewModel: BestAllianceViewModel, onBack: () -> Unit) {
     val rankedTeams by viewModel.getRankedTeams(parameters).collectAsState(initial = emptyList())
 
-    if (showSortRobots) {
-        Column {
-            TextButton(
-                modifier = Modifier
-                    .height(100.dp)
-                    .width(200.dp),
-                onClick = {
-                    showSortRobots = false
-                }
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Button(onClick = onBack, modifier = Modifier.padding(bottom = 16.dp)) {
+            Text("Back to Inputs")
+        }
+        
+        Text(text = "The best teams for us are", fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
+
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(rankedTeams) { team ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    elevation = CardDefaults.cardElevation(4.dp)
                 ) {
-                    Text(
-                        "return",
-                        fontSize = 40.sp
-                    )
-                }
-            }
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(rankedTeams) { team ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        elevation = CardDefaults.cardElevation(4.dp)
+                    Row(
+                        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(text = "${team.teamNumber} - ${team.teamName}")
-                            Text(text = "Score: ${team.score}")
-                        }
+                        Text(
+                            text = "${team.teamNumber} - ${team.teamName}", 
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "Score: ${"%.1f".format(team.score)}",
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.ExtraBold
+                        )
                     }
                 }
             }
         }
-    } else {
-        BestAlliance()
     }
-}
-
-
-
-@Preview
-@Composable
-private fun BestAlliancePreview() {
-    BestAlliance()
 }
