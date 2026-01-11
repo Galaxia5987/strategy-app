@@ -79,7 +79,7 @@ fun BestAllianceInputs(
         
         Spacer(modifier = Modifier.height(30.dp))
 
-        val labels = listOf("Auto Score", "Teleop Score", "Climb", "Net", "Park", "Played", "Defense", "Driving")
+        val labels = listOf("כמה fuel הוא קולע באוטונומי", "אחוזי הצלחה בקליעה באוטונומי", "אסיפת כדורים מהרצפה", "אסיפת", "Park", "Played", "Defense", "Driving")
         labels.forEachIndexed { index, label ->
             MySlider(
                 color = sliderColors[index],
