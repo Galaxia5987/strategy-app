@@ -34,4 +34,5 @@ fun gameDataTable(modifier: Modifier = Modifier, navController: NavController) {
             NavigationButtonsColumn(navController = navController)
         }
     }
+
 }
