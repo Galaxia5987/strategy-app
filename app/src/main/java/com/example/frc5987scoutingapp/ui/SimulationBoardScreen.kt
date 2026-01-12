@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -37,9 +38,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.frc5987scoutingapp.R
 import kotlin.math.roundToInt
+import androidx.compose.ui.platform.LocalLayoutDirection
 
 data class PathData(val points: List<Offset>, val color: Color)
 
@@ -93,289 +96,317 @@ fun SimulationBoardScreen() {
     var R3rotation by remember { mutableFloatStateOf(R3intialRotation) }
 
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.simulation_board_2026_with_fuel),
-            contentDescription = "Simulation Background season 2026",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit
-        )
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDragStart = { offset ->
-                            if (!isErasing) {
-                                currentPathPoints.add(offset)
-                            }
-                        },
-                        onDrag = { change, _ ->
-                            if (isErasing) {
-                                val eraserPosition = change.position
-                                val eraserRadius = 15.dp.toPx()
-                                paths.removeAll { pathData ->
-                                    pathData.points.any { point ->
-                                        (point - eraserPosition).getDistance() < eraserRadius
-                                    }
-                                }
-                            } else {
-                                currentPathPoints.add(change.position)
-                            }
-                        },
-                        onDragEnd = {
-                            if (!isErasing && currentPathPoints.size > 1) {
-                                paths.add(PathData(currentPathPoints.toList(), drawColor))
-                            }
-                            currentPathPoints.clear()
-                        },
-                        onDragCancel = {
-                            currentPathPoints.clear()
-                        }
-                    )
-                }
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            paths.forEach { pathData ->
-                if (pathData.points.size > 1) {
-                    val path = Path().apply {
-                        moveTo(pathData.points.first().x, pathData.points.first().y)
-                        for (i in 1 until pathData.points.size) {
-                            lineTo(pathData.points[i].x, pathData.points[i].y)
+            Image(
+                painter = painterResource(id = R.drawable.simulation_board_2026_with_fuel),
+                contentDescription = "Simulation Background season 2026",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Fit
+            )
+            Canvas(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectDragGestures(
+                            onDragStart = { offset ->
+                                if (!isErasing) {
+                                    currentPathPoints.add(offset)
+                                }
+                            },
+                            onDrag = { change, _ ->
+                                if (isErasing) {
+                                    val eraserPosition = change.position
+                                    val eraserRadius = 15.dp.toPx()
+                                    paths.removeAll { pathData ->
+                                        pathData.points.any { point ->
+                                            (point - eraserPosition).getDistance() < eraserRadius
+                                        }
+                                    }
+                                } else {
+                                    currentPathPoints.add(change.position)
+                                }
+                            },
+                            onDragEnd = {
+                                if (!isErasing && currentPathPoints.size > 1) {
+                                    paths.add(PathData(currentPathPoints.toList(), drawColor))
+                                }
+                                currentPathPoints.clear()
+                            },
+                            onDragCancel = {
+                                currentPathPoints.clear()
+                            }
+                        )
+                    }
+            ) {
+                paths.forEach { pathData ->
+                    if (pathData.points.size > 1) {
+                        val path = Path().apply {
+                            moveTo(pathData.points.first().x, pathData.points.first().y)
+                            for (i in 1 until pathData.points.size) {
+                                lineTo(pathData.points[i].x, pathData.points[i].y)
+                            }
+                        }
+                        drawPath(
+                            path = path,
+                            color = pathData.color,
+                            style = Stroke(width = 4.dp.toPx())
+                        )
+                    }
+                }
+                if (currentPathPoints.size > 1) {
+                    val currentPath = Path().apply {
+                        moveTo(currentPathPoints.first().x, currentPathPoints.first().y)
+                        for (i in 1 until currentPathPoints.size) {
+                            lineTo(currentPathPoints[i].x, currentPathPoints[i].y)
                         }
                     }
                     drawPath(
-                        path = path,
-                        color = pathData.color,
+                        path = currentPath,
+                        color = drawColor,
                         style = Stroke(width = 4.dp.toPx())
                     )
                 }
             }
-            if (currentPathPoints.size > 1) {
-                val currentPath = Path().apply {
-                    moveTo(currentPathPoints.first().x, currentPathPoints.first().y)
-                    for (i in 1 until currentPathPoints.size) {
-                        lineTo(currentPathPoints[i].x, currentPathPoints[i].y)
-                    }
-                }
-                drawPath(
-                    path = currentPath,
-                    color = drawColor,
-                    style = Stroke(width = 4.dp.toPx())
-                )
-            }
-        }
 
-        IconButton(
-            onClick = {
-                paths.clear()
-                B1offsetX = B1initialOffsetX
-                B1offsetY = B1initialOffsetY
-                B2offsetX = B2initialOffsetX
-                B2offsetY = B2initialOffsetY
-                B3offsetX = B3initialOffsetX
-                B3offsetY = B3initialOffsetY
-                R1offsetX = R1initialOffsetX
-                R1offsetY = R1initialOffsetY
-                R2offsetX = R2initialOffsetX
-                R2offsetY = R2initialOffsetY
-                R3offsetX = R3initialOffsetX
-                R3offsetY = R3initialOffsetY
-            },
-            modifier = Modifier.align(Alignment.TopEnd)
+            IconButton(
+                onClick = {
+                    paths.clear()
+                    B1offsetX = B1initialOffsetX
+                    B1offsetY = B1initialOffsetY
+                    B2offsetX = B2initialOffsetX
+                    B2offsetY = B2initialOffsetY
+                    B3offsetX = B3initialOffsetX
+                    B3offsetY = B3initialOffsetY
+                    R1offsetX = R1initialOffsetX
+                    R1offsetY = R1initialOffsetY
+                    R2offsetX = R2initialOffsetX
+                    R2offsetY = R2initialOffsetY
+                    R3offsetX = R3initialOffsetX
+                    R3offsetY = R3initialOffsetY
+                },
+                modifier = Modifier.align(Alignment.TopEnd)
 
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Refresh,
-                contentDescription = "Clear drawings"
-            )
-        }
-        Row(modifier = Modifier.align(Alignment.TopStart)) {
-            IconButton(
-                onClick = {
-                    isErasing = false
-                    drawColor = Color.Red
-                }
             ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Red, CircleShape))
-            }
-            IconButton(
-                onClick = {
-                    isErasing = false
-                    drawColor = Color.White
-                }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.White, CircleShape).border(1.dp, Color.Black, CircleShape))
-            }
-            IconButton(
-                onClick = {
-                    isErasing = false
-                    drawColor = Color.Blue
-                }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Blue, CircleShape).border(1.dp, Color.Black, CircleShape))
-            }
-            IconButton(
-                onClick = {
-                    isErasing = false
-                    drawColor = Color.Green
-                }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Green, CircleShape).border(1.dp, Color.Black, CircleShape))
-            }
-            IconButton(
-                onClick = {
-                    isErasing = false
-                    drawColor = Color.Black
-                }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Black, CircleShape).border(1.dp, Color.Black, CircleShape))
-            }
-            IconButton(
-                onClick = {
-                    isErasing = true
-                    drawColor = Color.Transparent
-                }
-            )  {
                 Icon(
-                    imageVector = Icons.Filled.Delete,
-                    modifier = Modifier.size(24.dp),
-                    contentDescription = "Erase"
+                    imageVector = Icons.Filled.Refresh,
+                    contentDescription = "Clear drawings"
                 )
             }
+            Row(modifier = Modifier.align(Alignment.TopStart)) {
+                IconButton(
+                    onClick = {
+                        isErasing = false
+                        drawColor = Color.Red
+                    }
+                ) {
+                    Box(modifier = Modifier.size(24.dp).background(Color.Red, CircleShape))
+                }
+                IconButton(
+                    onClick = {
+                        isErasing = false
+                        drawColor = Color.White
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.White, CircleShape)
+                            .border(1.dp, Color.Black, CircleShape)
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        isErasing = false
+                        drawColor = Color.Blue
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Blue, CircleShape)
+                            .border(1.dp, Color.Black, CircleShape)
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        isErasing = false
+                        drawColor = Color.Green
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Green, CircleShape)
+                            .border(1.dp, Color.Black, CircleShape)
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        isErasing = false
+                        drawColor = Color.Black
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Black, CircleShape)
+                            .border(1.dp, Color.Black, CircleShape)
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        isErasing = true
+                        drawColor = Color.Transparent
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        modifier = Modifier.size(24.dp),
+                        contentDescription = "Erase"
+                    )
+                }
 
-            // fake robots
-            Box(modifier = Modifier
-                .offset { IntOffset(B1offsetX.roundToInt(),B1offsetY.roundToInt())}
-                .background(Color.DarkGray)
-                .size(46.dp)
-                .border(4.dp, Color.Blue)
-                .clickable(onClick = {current_robot = 1})
-                .rotate(B1rotation)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        B1offsetX -= dragAmount.x
-                        B1offsetY += dragAmount.y
+                // fake robots
+                Box(
+                    modifier = Modifier
+                    .offset { IntOffset(B1offsetX.roundToInt(), B1offsetY.roundToInt()) }
+                    .background(Color.DarkGray)
+                    .size(46.dp)
+                    .border(4.dp, Color.Red)
+                    .clickable(onClick = { current_robot = 1 })
+                    .rotate(B1rotation)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            B1offsetX += dragAmount.x
+                            B1offsetY += dragAmount.y
+                        }
                     }
-                }
-            )
-            Box(modifier = Modifier
-                .offset { IntOffset(B2offsetX.roundToInt(),B2offsetY.roundToInt())}
-                .background(Color.DarkGray)
-                .size(46.dp)
-                .border(4.dp, Color.Blue)
-                .clickable(onClick = {current_robot = 2})
-                .rotate(B2rotation)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        B2offsetX -= dragAmount.x
-                        B2offsetY += dragAmount.y
+                )
+                Box(
+                    modifier = Modifier
+                    .offset { IntOffset(B2offsetX.roundToInt(), B2offsetY.roundToInt()) }
+                    .background(Color.DarkGray)
+                    .size(46.dp)
+                    .border(4.dp, Color.Red)
+                    .clickable(onClick = { current_robot = 2 })
+                    .rotate(B2rotation)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            B2offsetX += dragAmount.x
+                            B2offsetY += dragAmount.y
+                        }
                     }
-                }
-            )
-            Box(modifier = Modifier
-                .offset { IntOffset(B3offsetX.roundToInt(),B3offsetY.roundToInt())}
-                .background(Color.DarkGray)
-                .size(46.dp)
-                .border(4.dp, Color.Blue)
-                .clickable(onClick = {current_robot = 3})
-                .rotate(B3rotation)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        B3offsetX -= dragAmount.x
-                        B3offsetY += dragAmount.y
+                )
+                Box(
+                    modifier = Modifier
+                    .offset { IntOffset(B3offsetX.roundToInt(), B3offsetY.roundToInt()) }
+                    .background(Color.DarkGray)
+                    .size(46.dp)
+                    .border(4.dp, Color.Red)
+                    .clickable(onClick = { current_robot = 3 })
+                    .rotate(B3rotation)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            B3offsetX += dragAmount.x
+                            B3offsetY += dragAmount.y
+                        }
                     }
-                }
-            )
-            Box(modifier = Modifier
-                .offset { IntOffset(R1offsetX.roundToInt(),R1offsetY.roundToInt())}
-                .background(Color.DarkGray)
-                .size(46.dp)
-                .border(4.dp, Color.Red)
-                .clickable(onClick = {current_robot = 4})
-                .rotate(R1rotation)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        R1offsetX -= dragAmount.x
-                        R1offsetY += dragAmount.y
+                )
+                Box(
+                    modifier = Modifier
+                    .offset { IntOffset(R1offsetX.roundToInt(), R1offsetY.roundToInt()) }
+                    .background(Color.DarkGray)
+                    .size(46.dp)
+                    .border(4.dp, Color.Blue)
+                    .clickable(onClick = { current_robot = 4 })
+                    .rotate(R1rotation)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            R1offsetX += dragAmount.x
+                            R1offsetY += dragAmount.y
+                        }
                     }
-                }
-            )
-            Box(modifier = Modifier
-                .offset { IntOffset(R2offsetX.roundToInt(),R2offsetY.roundToInt())}
-                .background(Color.DarkGray)
-                .size(46.dp)
-                .border(4.dp, Color.Red)
-                .clickable(onClick = {current_robot = 5})
-                .rotate(R2rotation)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        R2offsetX -= dragAmount.x
-                        R2offsetY += dragAmount.y
+                )
+                Box(
+                    modifier = Modifier
+                    .offset { IntOffset(R2offsetX.roundToInt(), R2offsetY.roundToInt()) }
+                    .background(Color.DarkGray)
+                    .size(46.dp)
+                    .border(4.dp, Color.Blue)
+                    .clickable(onClick = { current_robot = 5 })
+                    .rotate(R2rotation)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            R2offsetX += dragAmount.x
+                            R2offsetY += dragAmount.y
+                        }
                     }
-                }
-            )
-            Box(modifier = Modifier
-                .offset { IntOffset(R3offsetX.roundToInt(),R3offsetY.roundToInt())}
-                .background(Color.DarkGray)
-                .size(46.dp)
-                .border(4.dp, Color.Red)
-                .clickable(onClick = {current_robot = 6})
-                .rotate(R3rotation)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        R3offsetX -= dragAmount.x
-                        R3offsetY += dragAmount.y
+                )
+                Box(
+                    modifier = Modifier
+                    .offset { IntOffset(R3offsetX.roundToInt(), R3offsetY.roundToInt()) }
+                    .background(Color.DarkGray)
+                    .size(46.dp)
+                    .border(4.dp, Color.Blue)
+                    .clickable(onClick = { current_robot = 6 })
+                    .rotate(R3rotation)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            R3offsetX += dragAmount.x
+                            R3offsetY += dragAmount.y
+                        }
                     }
-                }
-            )
-            IconButton( // blank button
-                onClick = {
-                    isErasing = false
-                    drawColor = Color.Transparent
-                }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Black).border(1.dp, Color.Black))
-            }
-            IconButton( //left rotation
-                onClick = {
-                    when (current_robot) {
-                        1 -> B1rotation += 5f
-                        2 -> B2rotation += 5f
-                        3 -> B3rotation += 5f
-                        4 -> R1rotation += 5f
-                        5 -> R2rotation += 5f
-                        6 -> R3rotation += 5f
+                )
+                IconButton( // blank button
+                    onClick = {
+                        isErasing = false
+                        drawColor = Color.Transparent
                     }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Black)
+                            .border(1.dp, Color.Black)
+                    )
                 }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Red).border(1.dp, Color.Yellow))
-            }
-            IconButton( //right rotation
-                onClick = {
-                    when (current_robot) {
-                        1 -> B1rotation -= 5f
-                        2 -> B2rotation -= 5f
-                        3 -> B3rotation -= 5f
-                        4 -> R1rotation -= 5f
-                        5 -> R2rotation -= 5f
-                        6 -> R3rotation -= 5f
+                IconButton( //left rotation
+                    onClick = {
+                        when (current_robot) {
+                            1 -> B1rotation += 5f
+                            2 -> B2rotation += 5f
+                            3 -> B3rotation += 5f
+                            4 -> R1rotation += 5f
+                            5 -> R2rotation += 5f
+                            6 -> R3rotation += 5f
+                        }
                     }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Red)
+                            .border(1.dp, Color.Yellow)
+                    )
                 }
-            ) {
-                Box(modifier = Modifier.size(24.dp).background(Color.Cyan).border(1.dp, Color.Yellow))
+                IconButton( //right rotation
+                    onClick = {
+                        when (current_robot) {
+                            1 -> B1rotation -= 5f
+                            2 -> B2rotation -= 5f
+                            3 -> B3rotation -= 5f
+                            4 -> R1rotation -= 5f
+                            5 -> R2rotation -= 5f
+                            6 -> R3rotation -= 5f
+                        }
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Cyan)
+                            .border(1.dp, Color.Yellow)
+                    )
+                }
             }
         }
-    }
 //
-
+    }
 }
 
 @Preview
@@ -383,4 +414,5 @@ fun SimulationBoardScreen() {
 private fun SimulationBoardScreenPreview() {
     SimulationBoardScreen()
 }
+
 
