@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.frc5987scoutingapp.data.db.scoutingDatabase
+import com.example.frc5987scoutingapp.data.model.GameData
 import com.example.frc5987scoutingapp.ui.theme.FRC5987ScoutingAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
                             BestAlliance()
                         }
                         composable("GameDataTable") {
-                            TODO()
+                            GameDataTable(())
                         }
                     }
                 }

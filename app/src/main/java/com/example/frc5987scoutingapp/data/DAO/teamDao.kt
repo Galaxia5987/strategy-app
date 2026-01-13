@@ -32,6 +32,11 @@ interface teamDao {
     @Query("SELECT * FROM teams")
     fun getAllTeamsData(): Flow<List<teams>>
 
+
+
+
+
+
     @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber ORDER BY MatchNumber ASC")
     fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<GameData>>
 
