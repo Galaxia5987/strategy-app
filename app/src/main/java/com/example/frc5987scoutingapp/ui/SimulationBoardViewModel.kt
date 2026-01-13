@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.example.frc5987scoutingapp.R
 
 class SimulationBoardViewModel : ViewModel() {
     val paths = mutableStateListOf<PathData>()
@@ -12,6 +13,9 @@ class SimulationBoardViewModel : ViewModel() {
     val drawColor = mutableStateOf(Color.Black)
     val isErasing = mutableStateOf(false)
     val currentRobot = mutableStateOf(0)
+    
+    // Background state
+    val currentBackground = mutableStateOf(R.drawable.simulation_board_2026_with_fuel)
 
     // Robot offsets and rotations
     val b1offsetX = mutableStateOf(0f)
@@ -34,7 +38,7 @@ class SimulationBoardViewModel : ViewModel() {
     val r2rotation = mutableStateOf(0f)
     val r3rotation = mutableStateOf(0f)
 
-    // Initial offsets (to be set once from UI density)
+    // Initial offsets
     var initialOffsetsSet = false
     private var b1InitialX = 0f
     private var b1InitialY = 0f
@@ -86,6 +90,10 @@ class SimulationBoardViewModel : ViewModel() {
         r3rotation.value = 0f
         
         paths.clear()
+    }
+
+    fun setBackground(resId: Int) {
+        currentBackground.value = resId
     }
 
     fun rotateCurrentRobot(degrees: Float) {

@@ -1,10 +1,12 @@
 package com.example.frc5987scoutingapp.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -43,8 +45,10 @@ import androidx.compose.ui.unit.dp
 import com.example.frc5987scoutingapp.R
 import kotlin.math.roundToInt
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.foundation.layout.*
 
 data class PathData(val points: List<Offset>, val color: Color)
+
 
 @Composable
 fun SimulationBoardScreen() {
@@ -95,13 +99,18 @@ fun SimulationBoardScreen() {
     val R3intialRotation = remember { with(density) { 0f } }
     var R3rotation by remember { mutableFloatStateOf(R3intialRotation) }
 
+    var currentBackground by remember { mutableStateOf(R.drawable.simulation_board_2026_with_fuel) }
+    val background1 = R.drawable.simulation_board_2026_with_fuel
+    val background2 = R.drawable.simulation_board_2026_ampty
+
+
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.simulation_board_2026_with_fuel),
+                painter = painterResource(id = currentBackground),
                 contentDescription = "Simulation Background season 2026",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
@@ -332,7 +341,7 @@ fun SimulationBoardScreen() {
                     .background(Color.DarkGray)
                     .size(46.dp)
                     .border(4.dp, Color.Blue)
-                    .clickable(onClick = { current_robot = 5 })
+                    .clickable(onClick = { current_robot = 5 }, )
                     .rotate(R2rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -343,12 +352,27 @@ fun SimulationBoardScreen() {
                     }
                 )
                 Box(
-                    modifier = Modifier
+                    modifier = Modifier.combinedClickable(
+                        onClick = {
+                        current_robot = 6
+                    },
+                        onDoubleClick = {
+                            Image(
+                                painter = painterResource(id = R.drawable.fuels0),
+                                contentDescription = "Simulation Background season 2026",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+
+                        },
+                        onLongClick = {
+                            Toast.makeText(context, "Long Pressed", Toast.LENGTH_SHORT).show()
+                        }
+                    )
                     .offset { IntOffset(R3offsetX.roundToInt(), R3offsetY.roundToInt()) }
                     .background(Color.DarkGray)
                     .size(46.dp)
                     .border(4.dp, Color.Blue)
-                    .clickable(onClick = { current_robot = 6 })
                     .rotate(R3rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -358,49 +382,24 @@ fun SimulationBoardScreen() {
                         }
                     }
                 )
-                IconButton( // blank button
+                IconButton( //שינוי לרקע עם דלק
                     onClick = {
-                        isErasing = false
-                        drawColor = Color.Transparent
+                        currentBackground = background1
                     }
                 ) {
                     Box(
-                        modifier = Modifier.size(24.dp).background(Color.Black)
-                            .border(1.dp, Color.Black)
-                    )
-                }
-                IconButton( //left rotation
-                    onClick = {
-                        when (current_robot) {
-                            1 -> B1rotation += 5f
-                            2 -> B2rotation += 5f
-                            3 -> B3rotation += 5f
-                            4 -> R1rotation += 5f
-                            5 -> R2rotation += 5f
-                            6 -> R3rotation += 5f
-                        }
-                    }
-                ) {
-                    Box(
-                        modifier = Modifier.size(24.dp).background(Color.Red)
+                        modifier = Modifier.size(24.dp).background(Color.Yellow)
                             .border(1.dp, Color.Yellow)
                     )
                 }
-                IconButton( //right rotation
+                IconButton( //שינוי לרקע בלי דלק
                     onClick = {
-                        when (current_robot) {
-                            1 -> B1rotation -= 5f
-                            2 -> B2rotation -= 5f
-                            3 -> B3rotation -= 5f
-                            4 -> R1rotation -= 5f
-                            5 -> R2rotation -= 5f
-                            6 -> R3rotation -= 5f
-                        }
+                        currentBackground = background2
                     }
                 ) {
                     Box(
-                        modifier = Modifier.size(24.dp).background(Color.Cyan)
-                            .border(1.dp, Color.Yellow)
+                        modifier = Modifier.size(24.dp).background(Color.Gray)
+                            .border(1.dp, Color.Gray)
                     )
                 }
             }
