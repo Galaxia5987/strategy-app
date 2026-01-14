@@ -1,18 +1,26 @@
 package com.example.frc5987scoutingapp.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -29,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -37,6 +46,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -44,12 +54,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.frc5987scoutingapp.R
 import kotlin.math.roundToInt
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.foundation.layout.*
 
 data class PathData(val points: List<Offset>, val color: Color)
 
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SimulationBoardScreen() {
     val paths = remember { mutableStateListOf<PathData>() }
@@ -103,7 +111,16 @@ fun SimulationBoardScreen() {
     val background1 = R.drawable.simulation_board_2026_with_fuel
     val background2 = R.drawable.simulation_board_2026_ampty
 
+    var currentrobot1photo by remember { mutableStateOf(R.drawable.fuels0) }
+    var currentrobot2photo by remember { mutableStateOf(R.drawable.fuels0) }
+    var currentrobot3photo by remember { mutableStateOf(R.drawable.fuels0) }
+    var currentrobot4photo by remember { mutableStateOf(R.drawable.fuels0) }
+    var currentrobot5photo by remember { mutableStateOf(R.drawable.fuels0) }
+    var currentrobot6photo by remember { mutableStateOf(R.drawable.fuels0) }
 
+    val fuel0 = R.drawable.fuels0
+    val fuel9 = R.drawable.fuels9
+    val fuel25 = R.drawable.fuels25
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Box(
@@ -238,11 +255,11 @@ fun SimulationBoardScreen() {
                 IconButton(
                     onClick = {
                         isErasing = false
-                        drawColor = Color.Green
+                        drawColor = Color.Yellow
                     }
                 ) {
                     Box(
-                        modifier = Modifier.size(24.dp).background(Color.Green, CircleShape)
+                        modifier = Modifier.size(24.dp).background(Color.Yellow, CircleShape)
                             .border(1.dp, Color.Black, CircleShape)
                     )
                 }
@@ -274,10 +291,21 @@ fun SimulationBoardScreen() {
                 Box(
                     modifier = Modifier
                     .offset { IntOffset(B1offsetX.roundToInt(), B1offsetY.roundToInt()) }
-                    .background(Color.DarkGray)
-                    .size(46.dp)
-                    .border(4.dp, Color.Red)
-                    .clickable(onClick = { current_robot = 1 })
+                        .size(50.dp)
+                        .combinedClickable(
+                            onClick = {
+                                current_robot = 1
+                                currentrobot1photo = fuel9
+                            },
+                            onDoubleClick = {
+                                currentrobot1photo = fuel25
+                            },
+                            onLongClick = {
+                                currentrobot1photo = fuel0
+                            }
+                        )
+                        .paint(painter = painterResource(id = currentrobot1photo), contentScale = ContentScale.FillBounds)
+                        .border(4.dp, Color.Red)
                     .rotate(B1rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -290,10 +318,21 @@ fun SimulationBoardScreen() {
                 Box(
                     modifier = Modifier
                     .offset { IntOffset(B2offsetX.roundToInt(), B2offsetY.roundToInt()) }
-                    .background(Color.DarkGray)
-                    .size(46.dp)
+                        .size(50.dp)
+                        .combinedClickable(
+                            onClick = {
+                                current_robot = 2
+                                currentrobot2photo = fuel9
+                            },
+                            onDoubleClick = {
+                                currentrobot2photo = fuel25
+                            },
+                            onLongClick = {
+                                currentrobot2photo = fuel0
+                            }
+                        )
+                        .paint(painter = painterResource(id = currentrobot2photo), contentScale = ContentScale.FillBounds)
                     .border(4.dp, Color.Red)
-                    .clickable(onClick = { current_robot = 2 })
                     .rotate(B2rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -306,10 +345,21 @@ fun SimulationBoardScreen() {
                 Box(
                     modifier = Modifier
                     .offset { IntOffset(B3offsetX.roundToInt(), B3offsetY.roundToInt()) }
-                    .background(Color.DarkGray)
-                    .size(46.dp)
-                    .border(4.dp, Color.Red)
-                    .clickable(onClick = { current_robot = 3 })
+                        .size(50.dp)
+                        .combinedClickable(
+                            onClick = {
+                                current_robot = 3
+                                currentrobot3photo = fuel9
+                            },
+                            onDoubleClick = {
+                                currentrobot3photo = fuel25
+                            },
+                            onLongClick = {
+                                currentrobot3photo = fuel0
+                            }
+                        )
+                        .paint(painter = painterResource(id = currentrobot3photo), contentScale = ContentScale.FillBounds)
+                        .border(4.dp, Color.Red)
                     .rotate(B3rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -322,10 +372,22 @@ fun SimulationBoardScreen() {
                 Box(
                     modifier = Modifier
                     .offset { IntOffset(R1offsetX.roundToInt(), R1offsetY.roundToInt()) }
-                    .background(Color.DarkGray)
-                    .size(46.dp)
+                    .size(50.dp)
+                    .combinedClickable(
+                        onClick = {
+                            current_robot = 4
+                            currentrobot4photo = fuel9
+                        },
+                        onDoubleClick = {
+                            currentrobot4photo = fuel25
+                        },
+                        onLongClick = {
+                            currentrobot4photo = fuel0
+                        }
+                    )
+                        .paint(painter = painterResource(id = currentrobot4photo), contentScale = ContentScale.FillBounds)
+                        .size(46.dp)
                     .border(4.dp, Color.Blue)
-                    .clickable(onClick = { current_robot = 4 })
                     .rotate(R1rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -338,10 +400,21 @@ fun SimulationBoardScreen() {
                 Box(
                     modifier = Modifier
                     .offset { IntOffset(R2offsetX.roundToInt(), R2offsetY.roundToInt()) }
-                    .background(Color.DarkGray)
-                    .size(46.dp)
-                    .border(4.dp, Color.Blue)
-                    .clickable(onClick = { current_robot = 5 }, )
+                        .size(50.dp)
+                        .combinedClickable(
+                            onClick = {
+                                current_robot = 5
+                                currentrobot5photo = fuel9
+                            },
+                            onDoubleClick = {
+                                currentrobot5photo = fuel25
+                            },
+                            onLongClick = {
+                                currentrobot5photo = fuel0
+                            }
+                        )
+                        .paint(painter = painterResource(id = currentrobot5photo), contentScale = ContentScale.FillBounds)
+                        .border(4.dp, Color.Blue)
                     .rotate(R2rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -352,26 +425,22 @@ fun SimulationBoardScreen() {
                     }
                 )
                 Box(
-                    modifier = Modifier.combinedClickable(
+                    modifier = Modifier
+                    .offset { IntOffset(R3offsetX.roundToInt(), R3offsetY.roundToInt()) }
+                    .size(50.dp)
+                    .combinedClickable(
                         onClick = {
                         current_robot = 6
-                    },
+                            currentrobot6photo = fuel9
+                        },
                         onDoubleClick = {
-                            Image(
-                                painter = painterResource(id = R.drawable.fuels0),
-                                contentDescription = "Simulation Background season 2026",
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.Fit
-                            )
-
+                            currentrobot6photo = fuel25
                         },
                         onLongClick = {
-                            Toast.makeText(context, "Long Pressed", Toast.LENGTH_SHORT).show()
+                            currentrobot6photo = fuel0
                         }
                     )
-                    .offset { IntOffset(R3offsetX.roundToInt(), R3offsetY.roundToInt()) }
-                    .background(Color.DarkGray)
-                    .size(46.dp)
+                    .paint(painter = painterResource(id = currentrobot6photo), contentScale = ContentScale.FillBounds)
                     .border(4.dp, Color.Blue)
                     .rotate(R3rotation)
                     .pointerInput(Unit) {
@@ -404,7 +473,6 @@ fun SimulationBoardScreen() {
                 }
             }
         }
-//
     }
 }
 
@@ -413,5 +481,3 @@ fun SimulationBoardScreen() {
 private fun SimulationBoardScreenPreview() {
     SimulationBoardScreen()
 }
-
-
