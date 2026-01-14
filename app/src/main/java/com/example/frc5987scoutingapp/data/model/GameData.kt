@@ -22,7 +22,7 @@ import com.example.frc5987scoutingapp.data.model.enums.robotPosition
 )
 data class GameData(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
 
     //PreMatch
     val scouter: String = "",

@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                             BestAlliance()
                         }
                         composable("GameDataTable") {
-                            GameDataTable(())
+                            GameDataTable(GameData())
                         }
                     }
                 }
