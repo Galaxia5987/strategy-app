@@ -68,27 +68,27 @@ fun SimulationBoardScreen() {
 
     val density = LocalDensity.current
     // מיקום התחלתי של הרובוטים
-    val B1initialOffsetX = remember { with(density) { 40.dp.toPx() } }
+    val B1initialOffsetX = remember { with(density) { 540.dp.toPx() } }
     val B1initialOffsetY = remember { with(density) { 140.dp.toPx() } }
     var B1offsetX by remember { mutableFloatStateOf(B1initialOffsetX) }
     var B1offsetY by remember { mutableFloatStateOf(B1initialOffsetY) }
-    val B2initialOffsetX = remember { with(density) { -5.dp.toPx() } }
+    val B2initialOffsetX = remember { with(density) { 490.dp.toPx() } }
     val B2initialOffsetY = remember { with(density) { 319.dp.toPx() } }
     var B2offsetX by remember { mutableFloatStateOf(B2initialOffsetX) }
     var B2offsetY by remember { mutableFloatStateOf(B2initialOffsetY) }
-    val B3initialOffsetX = remember { with(density) { -50.dp.toPx() } }
+    val B3initialOffsetX = remember { with(density) { 440.dp.toPx() } }
     val B3initialOffsetY = remember { with(density) { 500.dp.toPx() } }
     var B3offsetX by remember { mutableFloatStateOf(B3initialOffsetX) }
     var B3offsetY by remember { mutableFloatStateOf(B3initialOffsetY) }
-    val R1initialOffsetX = remember { with(density) { 402.dp.toPx() } }
+    val R1initialOffsetX = remember { with(density) {-115.dp.toPx() } }
     val R1initialOffsetY = remember { with(density) { 140.dp.toPx() } }
     var R1offsetX by remember { mutableFloatStateOf(R1initialOffsetX) }
     var R1offsetY by remember { mutableFloatStateOf(R1initialOffsetY) }
-    val R2initialOffsetX = remember { with(density) { 355.dp.toPx() } }
+    val R2initialOffsetX = remember { with(density) { -160.dp.toPx() } }
     val R2initialOffsetY = remember { with(density) { 319.dp.toPx() } }
     var R2offsetX by remember { mutableFloatStateOf(R2initialOffsetX) }
     var R2offsetY by remember { mutableFloatStateOf(R2initialOffsetY) }
-    val R3initialOffsetX = remember { with(density) { 310.dp.toPx() } }
+    val R3initialOffsetX = remember { with(density) { -210.dp.toPx() } }
     val R3initialOffsetY = remember { with(density) { 500.dp.toPx() } }
 
 
@@ -212,6 +212,14 @@ fun SimulationBoardScreen() {
                     R2offsetY = R2initialOffsetY
                     R3offsetX = R3initialOffsetX
                     R3offsetY = R3initialOffsetY
+
+                    currentrobot1photo = fuel0
+                    currentrobot2photo = fuel0
+                    currentrobot3photo = fuel0
+                    currentrobot4photo = fuel0
+                    currentrobot5photo = fuel0
+                    currentrobot6photo = fuel0
+
                 },
                 modifier = Modifier.align(Alignment.TopEnd)
 
@@ -305,7 +313,7 @@ fun SimulationBoardScreen() {
                             }
                         )
                         .paint(painter = painterResource(id = currentrobot1photo), contentScale = ContentScale.FillBounds)
-                        .border(4.dp, Color.Red)
+                        .border(4.dp, Color.Blue)
                     .rotate(B1rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -332,7 +340,7 @@ fun SimulationBoardScreen() {
                             }
                         )
                         .paint(painter = painterResource(id = currentrobot2photo), contentScale = ContentScale.FillBounds)
-                    .border(4.dp, Color.Red)
+                    .border(4.dp, Color.Blue)
                     .rotate(B2rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -359,7 +367,7 @@ fun SimulationBoardScreen() {
                             }
                         )
                         .paint(painter = painterResource(id = currentrobot3photo), contentScale = ContentScale.FillBounds)
-                        .border(4.dp, Color.Red)
+                        .border(4.dp, Color.Blue)
                     .rotate(B3rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -387,7 +395,7 @@ fun SimulationBoardScreen() {
                     )
                         .paint(painter = painterResource(id = currentrobot4photo), contentScale = ContentScale.FillBounds)
                         .size(46.dp)
-                    .border(4.dp, Color.Blue)
+                    .border(4.dp, Color.Red)
                     .rotate(R1rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -414,7 +422,7 @@ fun SimulationBoardScreen() {
                             }
                         )
                         .paint(painter = painterResource(id = currentrobot5photo), contentScale = ContentScale.FillBounds)
-                        .border(4.dp, Color.Blue)
+                        .border(4.dp, Color.Red)
                     .rotate(R2rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -441,7 +449,7 @@ fun SimulationBoardScreen() {
                         }
                     )
                     .paint(painter = painterResource(id = currentrobot6photo), contentScale = ContentScale.FillBounds)
-                    .border(4.dp, Color.Blue)
+                    .border(4.dp, Color.Red)
                     .rotate(R3rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
