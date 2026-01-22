@@ -50,8 +50,9 @@ fun MainScreenContent(modifier: Modifier = Modifier, navController: NavControlle
             verticalArrangement = Arrangement.Top
         ) {
             HeaderSection()
-            Spacer(modifier = Modifier.height(32.dp))
-            NavigationButtonsColumn(navController = navController)
+            Spacer(modifier = Modifier.height(1.dp))
+            NavigationButtonsColumn(
+                navController = navController)
         }
     }
 }
@@ -84,8 +85,11 @@ fun HeaderSection() {
 fun NavigationButtonsColumn(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(300.dp)
+        modifier = Modifier.width(700.dp)
     ) {
+        AppButton(text = "Games Schedule") {
+        navController.navigate("GamesSchedule")
+        }
         AppButton(text = "סימולציית לוח משחק") {
             navController.navigate("SimulationBoardScreen")
         }
@@ -101,6 +105,7 @@ fun NavigationButtonsColumn(navController: NavController) {
         AppButton(text = "טבלת נתוני משחק") {
             navController.navigate("GameDataTable")
         }
+
     }
 }
 
@@ -110,7 +115,7 @@ fun AppButton(text: String, onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 12.dp),
+            .padding(bottom = 10.dp),
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
