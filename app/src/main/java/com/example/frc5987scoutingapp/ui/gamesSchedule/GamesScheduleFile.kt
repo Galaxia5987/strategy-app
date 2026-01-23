@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.gamesSchedule
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.frc5987scoutingapp.ui.gamesSchedule.GamesScheduleViewModel
 
 @Composable
 fun GamesScheduleFile() {

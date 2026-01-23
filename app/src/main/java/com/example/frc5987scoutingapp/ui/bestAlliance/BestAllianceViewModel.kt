@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.bestAlliance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlin.math.roundToInt
 
 data class TeamWithScore(
     val teamNumber: Int,

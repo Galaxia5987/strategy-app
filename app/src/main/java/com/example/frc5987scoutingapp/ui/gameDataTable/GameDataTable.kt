@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.gameDataTable
 
 
 import androidx.compose.runtime.Composable

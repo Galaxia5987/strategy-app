@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.allianceView
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -120,6 +120,12 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
         _redTeam1.postValue(null)
         _redTeam2.postValue(null)
         _redTeam3.postValue(null)
+    }
+
+    fun clearSlot(position: AlliancePosition) {
+        observationJobs[position]?.cancel()
+        observationJobs.remove(position)
+        updateAlliancePosition(position, null)
     }
 
     fun insertGameData(gameData: GameData) {

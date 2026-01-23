@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.simulationBoard
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,10 +10,10 @@ import com.example.frc5987scoutingapp.R
 class SimulationBoardViewModel : ViewModel() {
     val paths = mutableStateListOf<PathData>()
     val currentPathPoints = mutableStateListOf<Offset>()
-    val drawColor = mutableStateOf(Color.Black)
+    val drawColor = mutableStateOf(Color.Companion.Black)
     val isErasing = mutableStateOf(false)
     val currentRobot = mutableStateOf(0)
-    
+
     // Background state
     val currentBackground = mutableStateOf(R.drawable.simulation_board_2026_with_fuel)
 
@@ -68,7 +68,7 @@ class SimulationBoardViewModel : ViewModel() {
             r1InitialX = r1x; r1InitialY = r1y
             r2InitialX = r2x; r2InitialY = r2y
             r3InitialX = r3x; r3InitialY = r3y
-            
+
             resetPositions()
             initialOffsetsSet = true
         }
@@ -81,14 +81,14 @@ class SimulationBoardViewModel : ViewModel() {
         r1offsetX.value = r1InitialX; r1offsetY.value = r1InitialY
         r2offsetX.value = r2InitialX; r2offsetY.value = r2InitialY
         r3offsetX.value = r3InitialX; r3offsetY.value = r3InitialY
-        
+
         b1rotation.value = 0f
         b2rotation.value = 0f
         b3rotation.value = 0f
         r1rotation.value = 0f
         r2rotation.value = 0f
         r3rotation.value = 0f
-        
+
         paths.clear()
     }
 
