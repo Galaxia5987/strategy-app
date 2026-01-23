@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.frc5987scoutingapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -38,6 +38,17 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/io.netty.versions.properties"
+        }
+    }
 }
 
 dependencies {
@@ -47,14 +58,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime.livedata)
     val roomVersion = "2.8.3"
-    val lifecycle_version = "2.9.4"
-    val arch_version = "2.2.0"
 
     implementation(libs.androidx.core.ktx)
 
-    // Compose/Lifecycle
-    //implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}")
-    //implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycle_version}")
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -69,7 +75,22 @@ dependencies {
     implementation("androidx.room:room-paging:$roomVersion:")
     implementation("androidx.navigation:navigation-compose:2.9.5")
     implementation("androidx.compose.material3:material3:1.4.0")
-    implementation("androidx.compose.material:material-icons-extended-android:1.7.0-alpha08") // Use the latest stable or compatible version
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.0-alpha08")
+    
+    // Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // Apache POI for Excel
+    implementation("org.apache.poi:poi:5.2.5")
+    implementation("org.apache.poi:poi-ooxml:5.2.5")
+    
+    // Fix for the Log4j crash on Android
+    implementation("org.apache.logging.log4j:log4j-api:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+
+    // Stax/Woodstox for XML parsing
+    implementation("com.fasterxml.woodstox:woodstox-core:6.5.0")
+    implementation("stax:stax-api:1.0.1")
 
     ksp("androidx.room:room-compiler:$roomVersion")
 

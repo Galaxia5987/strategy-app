@@ -1,5 +1,7 @@
 ﻿package com.example.frc5987scoutingapp.ui
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,10 +15,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.frc5987scoutingapp.data.db.scoutingDatabase
-import com.example.frc5987scoutingapp.data.model.GameData
 import com.example.frc5987scoutingapp.ui.theme.FRC5987ScoutingAppTheme
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        val locale = Locale("en")
+        Locale.setDefault(locale)
+        val configuration = Configuration(newBase.resources.configuration)
+        configuration.setLocale(locale)
+        configuration.setLayoutDirection(locale)
+        val context = newBase.createConfigurationContext(configuration)
+        super.attachBaseContext(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,6 +65,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("GameDataTable") {
                             TODO()
+                        }
+                        composable("GamesSchedule") {
+                            GamesScheduleFile()
                         }
                     }
                 }
