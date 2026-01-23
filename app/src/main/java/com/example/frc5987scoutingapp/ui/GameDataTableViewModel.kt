@@ -1,20 +1,21 @@
 package com.example.frc5987scoutingapp.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import com.example.frc5987scoutingapp.data.DAO.teamDao
-import  androidx.lifecycle.ViewModel
-/*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.frc5987scoutingapp.data.model.teams
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import androidx.lifecycle.viewModelScope
+import com.example.frc5987scoutingapp.data.model.GameData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-@Composable
+class GameDataViewModel (private val teamDao: teamDao ): ViewModel (){
+   val matchData : =
 
-class TeamViewModel(private val teamDao: teamDao) : ViewModel() {
-    val teamList: StateFlow<List<Team>> = teamDao.getAllTeamsData()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000), // Keeps flow alive for 5s after UI disappears
-            initialValue = emptyList()
-        )
+
 
 
 
@@ -22,4 +23,3 @@ class TeamViewModel(private val teamDao: teamDao) : ViewModel() {
 
 }
 
- */

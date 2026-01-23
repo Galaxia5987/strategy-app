@@ -2,6 +2,7 @@
 package com.example.frc5987scoutingapp.data.DAO
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,11 +17,15 @@ import kotlinx.coroutines.flow.Flow
 interface teamDao {
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGameData(data: GameData)
+    @Query("DELETE FROM GameData WHERE  teamNumber = :teamNumber & matchNumber = :matchNumber")
+    suspend fun deleteThisMatch(teamNumber: Int, matchNumber: Number)
 
     @Update
     suspend fun updateTeamCoachNotes(team: teams)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGameData(data: GameData)
+
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTeam(team: teams)
@@ -30,7 +35,9 @@ interface teamDao {
 
 
     @Query("SELECT * FROM teams")
-    fun getAllTeamsData(): Flow<List<teams>>
+    fun getAllTeams(): Flow<List<teams>>
+
+
 
 
 

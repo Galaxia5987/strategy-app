@@ -34,8 +34,8 @@ fun TableCell(
     Text(
         text = text,
         modifier = Modifier
-            .border(1.dp, Color.Gray)
-            .width(120.dp) // Fixed width for horizontal scrolling
+            .border(2.dp, Color.Blue)
+            .width(67.dp) // Fixed width for horizontal scrolling
             .padding(8.dp),
         fontWeight = if (isHeader) FontWeight.Bold else FontWeight.Normal,
         textAlign = TextAlign.Center,
@@ -47,7 +47,7 @@ fun TableCell(
 @Composable
 fun GameDataTable(data: GameData, isHeader: Boolean = false) {
     Row(Modifier.background(if (isHeader) Color.LightGray else Color.White)) {
-        // We pick the most important columns to show
+
         TableCell(
             text = if (isHeader) "match(1)" else data.matchNumber.toString(),
             weight = 1f,
