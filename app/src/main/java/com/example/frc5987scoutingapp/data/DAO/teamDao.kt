@@ -39,7 +39,7 @@ interface teamDao {
     fun getAllTeams(): Flow<List<teams>>
 
     @Query ("SELECT* FROM GameData")
-    fun getAllGameData  (): StateFlow<List<com.example.frc5987scoutingapp.`data`.model.GameData>>
+    fun getAllGameData  (): Flow<List<GameData>>
 
 
 
@@ -47,7 +47,7 @@ interface teamDao {
 
 
     @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber ORDER BY MatchNumber ASC")
-    fun getAllGameDataForTeamX(teamNumber: Int): StateFlow<List<com.example.frc5987scoutingapp.`data`.model.GameData>>
+    fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<GameData>>
 
     @Query("SELECT COUNT(MatchNumber) FROM GameData WHERE teamNumber = :teamNumber")
     fun getTeamMatchesCount(teamNumber: Int): Flow<Int>

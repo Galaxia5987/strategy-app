@@ -35,7 +35,7 @@ fun TableCell(
         text = text,
         modifier = Modifier
             .border(2.dp, Color.Blue)
-            .width(67.dp) // Fixed width for horizontal scrolling
+            .width(67.dp)
             .padding(8.dp),
         fontWeight = if (isHeader) FontWeight.Bold else FontWeight.Normal,
         textAlign = TextAlign.Center,
@@ -43,6 +43,7 @@ fun TableCell(
         overflow = TextOverflow.Ellipsis
     )
 }
+
 
 @Composable
 fun GameDataTable(data: GameData, isHeader: Boolean = false) {
