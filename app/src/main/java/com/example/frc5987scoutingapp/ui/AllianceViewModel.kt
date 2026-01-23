@@ -122,6 +122,12 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
         _redTeam3.postValue(null)
     }
 
+    fun clearSlot(position: AlliancePosition) {
+        observationJobs[position]?.cancel()
+        observationJobs.remove(position)
+        updateAlliancePosition(position, null)
+    }
+
     fun insertGameData(gameData: GameData) {
         viewModelScope.launch {
             try {
