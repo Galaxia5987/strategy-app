@@ -11,6 +11,7 @@ import com.example.frc5987scoutingapp.data.model.teams
 import com.example.frc5987scoutingapp.data.model.GameData
 import com.example.frc5987scoutingapp.data.model.enums.scoringData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Dao
@@ -18,7 +19,7 @@ interface teamDao {
 
 
     @Query("DELETE FROM GameData WHERE  teamNumber = :teamNumber & matchNumber = :matchNumber")
-    suspend fun deleteThisMatch(teamNumber: Int, matchNumber: Number)
+    suspend fun deleteThisMatch(teamNumber: Int, matchNumber: Int)
 
     @Update
     suspend fun updateTeamCoachNotes(team: teams)
@@ -30,14 +31,15 @@ interface teamDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTeam(team: teams)
 
-    @Query("SELECT * FROM teams WHERE teamNumber = :TeamNumber")
-    suspend fun getTeam(TeamNumber: Int): teams?
+    @Query("SELECT * FROM teams WHERE teamNumber = teamNumber ")
+    suspend fun getTeam(teamNumber: Int): teams?
 
 
     @Query("SELECT * FROM teams")
     fun getAllTeams(): Flow<List<teams>>
 
-
+    @Query ("SELECT* FROM GameData")
+    fun getAllGameData  (): StateFlow<List<com.example.frc5987scoutingapp.`data`.model.GameData>>
 
 
 
@@ -45,7 +47,7 @@ interface teamDao {
 
 
     @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber ORDER BY MatchNumber ASC")
-    fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<GameData>>
+    fun getAllGameDataForTeamX(teamNumber: Int): StateFlow<List<com.example.frc5987scoutingapp.`data`.model.GameData>>
 
     @Query("SELECT COUNT(MatchNumber) FROM GameData WHERE teamNumber = :teamNumber")
     fun getTeamMatchesCount(teamNumber: Int): Flow<Int>
