@@ -1,9 +1,5 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.gameDataTable
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import com.example.frc5987scoutingapp.data.DAO.teamDao
-import  androidx.lifecycle.ViewModel
 /*
 
 @Composable

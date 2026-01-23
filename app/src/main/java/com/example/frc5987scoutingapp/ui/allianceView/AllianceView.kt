@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.allianceView
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -18,8 +18,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import com.example.frc5987scoutingapp.data.model.quickGameStats
+import com.example.frc5987scoutingapp.ui.AppButton
 import java.text.DecimalFormat
+
 
 @Composable
 fun AllianceView(viewModel: AllianceViewModel) {
@@ -160,6 +163,7 @@ fun TeamStatsDisplay(stats: quickGameStats, onClear: () -> Unit) {
                 if (stats.generalNote.isNotBlank() && !stats.generalNote.contains("אין נתונים")) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(text = "Notes: ${stats.generalNote}", fontSize = 12.sp)
+
                 }
             }
             
@@ -178,3 +182,5 @@ fun TeamStatsDisplay(stats: quickGameStats, onClear: () -> Unit) {
         }
     }
 }
+
+

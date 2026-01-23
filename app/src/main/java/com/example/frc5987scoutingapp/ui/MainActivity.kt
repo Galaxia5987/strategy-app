@@ -15,6 +15,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.frc5987scoutingapp.data.db.scoutingDatabase
+import com.example.frc5987scoutingapp.ui.allianceView.AllianceView
+import com.example.frc5987scoutingapp.ui.allianceView.AllianceViewModel
+import com.example.frc5987scoutingapp.ui.allianceView.AllianceViewModelFactory
+import com.example.frc5987scoutingapp.ui.bestAlliance.BestAlliance
+import com.example.frc5987scoutingapp.ui.gamesSchedule.GamesScheduleFile
+import com.example.frc5987scoutingapp.ui.simulationBoard.SimulationBoardScreen
 import com.example.frc5987scoutingapp.ui.theme.FRC5987ScoutingAppTheme
 import java.util.Locale
 

@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui
+package com.example.frc5987scoutingapp.ui.gamesSchedule
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

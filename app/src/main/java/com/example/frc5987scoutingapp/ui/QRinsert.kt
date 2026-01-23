@@ -2,12 +2,12 @@ package com.example.frc5987scoutingapp.ui
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.frc5987scoutingapp.data.model.GameData
+import com.example.frc5987scoutingapp.ui.allianceView.AllianceViewModel
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
