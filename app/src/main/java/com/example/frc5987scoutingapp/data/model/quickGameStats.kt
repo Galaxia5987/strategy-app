@@ -11,5 +11,6 @@ data class quickGameStats(
     val avgTeleopScore: Double = 0.0,
     val avgTotalScore: Double = 0.0,
     val climbPercentage: Double = 0.0,
+    val amountOfGames: Int = 0,
     val generalNote: String = ""
 )

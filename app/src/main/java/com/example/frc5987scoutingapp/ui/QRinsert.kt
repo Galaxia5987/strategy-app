@@ -43,6 +43,7 @@ private fun startQRCamera(context: Context, allianceViewModel: AllianceViewModel
             } else {
                 Toast.makeText(context, "Invalid QR code data. Expected 35 fields, but found ${result.size}", Toast.LENGTH_LONG).show()
             }
+
             navController.popBackStack()
         }
         .addOnCanceledListener {

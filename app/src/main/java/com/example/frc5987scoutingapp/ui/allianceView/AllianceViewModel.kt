@@ -21,7 +21,7 @@ enum class AlliancePosition {
     RED_1, RED_2, RED_3
 }
 
-class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
+class AllianceViewModel(val teamDao: teamDao) : ViewModel() {
 
     private val _blueTeam1 = MutableLiveData<quickGameStats?>()
     val blueTeam1: LiveData<quickGameStats?> = _blueTeam1
@@ -62,6 +62,7 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
                     val climbPercentage = (successfulClimbs.toDouble() / gameDataList.size) * 100
 
                     val avgDefenceLevel = gameDataList.map { it.defenseSkills }.average().let { if (it.isNaN()) 0 else it.roundToInt() }
+                    val amountOfGames = gameDataList.size
                     val note = "ממוצע רמת הגנה: $avgDefenceLevel"
 
                     updateAlliancePosition(alliancePosition, quickGameStats(
@@ -70,6 +71,7 @@ class AllianceViewModel(private val teamDao: teamDao) : ViewModel() {
                         avgTeleopScore = avgTeleop,
                         avgTotalScore = avgAuto + avgTeleop,
                         climbPercentage = climbPercentage,
+                        amountOfGames = gameDataList.size,
                         generalNote = note
                     ))
                 }

@@ -41,7 +41,7 @@ interface teamDao {
     fun getAllGameDataForTeamX(teamNumber: Int): Flow<List<GameData>>
 
     @Query("SELECT COUNT(MatchNumber) FROM GameData WHERE teamNumber = :teamNumber")
-    fun getTeamMatchesCount(teamNumber: Int): Flow<Int>
+    fun amountOfGames(teamNumber: Int): Flow<Int>
 
   //  @Query("SELECT * FROM QuickGameStats")
   //  fun getAllpreScoutData(): Flow<List<preScoutData>>
@@ -51,6 +51,7 @@ interface teamDao {
 
     @Query("SELECT * FROM GameData WHERE teamNumber = :teamNumber & MatchNumber = :D_MatchNumber")
     fun teamsMatchSucssesScoringRate(teamNumber: Int, D_MatchNumber: Int): Flow<List<GameData>>
+
 
     @Query(
         """

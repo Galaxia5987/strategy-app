@@ -1,4 +1,4 @@
-package com.example.frc5987scoutingapp.ui.allianceView
+package com.example.frc5987scoutingapp.ui.galaxiaMatchesView
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -18,15 +18,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
-import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.quickGameStats
-import com.example.frc5987scoutingapp.ui.AppButton
 import java.text.DecimalFormat
 
-
 @Composable
-fun AllianceView(viewModel: AllianceViewModel) {
+fun GalaxiaAllianceMatchesView(viewModel: GalaxiaMatchesViewModal) {
     val insertionResult by viewModel.insertionResult.observeAsState()
     val context = LocalContext.current
 
@@ -53,9 +49,9 @@ fun AllianceView(viewModel: AllianceViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                TeamInputSection("Red 1", viewModel.redTeam1, AlliancePosition.RED_1, viewModel)
-                TeamInputSection("Red 2", viewModel.redTeam2, AlliancePosition.RED_2, viewModel)
-                TeamInputSection("Red 3", viewModel.redTeam3, AlliancePosition.RED_3, viewModel)
+                TeamInputSection("Red 1", viewModel.redTeam1, GalaxiaAlliancePosition.RED_1, viewModel)
+                TeamInputSection("Red 2", viewModel.redTeam2, GalaxiaAlliancePosition.RED_2, viewModel)
+                TeamInputSection("Red 3", viewModel.redTeam3, GalaxiaAlliancePosition.RED_3, viewModel)
             }
 
             // Blue Alliance
@@ -68,9 +64,9 @@ fun AllianceView(viewModel: AllianceViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                TeamInputSection("Blue 1", viewModel.blueTeam1, AlliancePosition.BLUE_1, viewModel)
-                TeamInputSection("Blue 2", viewModel.blueTeam2, AlliancePosition.BLUE_2, viewModel)
-                TeamInputSection("Blue 3", viewModel.blueTeam3, AlliancePosition.BLUE_3, viewModel)
+                TeamInputSection("Blue 1", viewModel.blueTeam1, GalaxiaAlliancePosition.BLUE_1, viewModel)
+                TeamInputSection("Blue 2", viewModel.blueTeam2, GalaxiaAlliancePosition.BLUE_2, viewModel)
+                TeamInputSection("Blue 3", viewModel.blueTeam3, GalaxiaAlliancePosition.BLUE_3, viewModel)
             }
         }
 
@@ -91,16 +87,18 @@ fun AllianceView(viewModel: AllianceViewModel) {
 fun TeamInputSection(
     label: String,
     teamStatsLiveData: LiveData<quickGameStats?>,
-    alliancePosition: AlliancePosition,
-    viewModel: AllianceViewModel
+    alliancePosition: GalaxiaAlliancePosition,
+    viewModel: GalaxiaMatchesViewModal
 ) {
     var teamNumber by remember { mutableStateOf("") }
     val teamStats by teamStatsLiveData.observeAsState()
 
-    // Reset local teamNumber when ViewModel data is cleared
+    // Sync input field with data state
     LaunchedEffect(teamStats) {
         if (teamStats == null) {
             teamNumber = ""
+        } else {
+            teamNumber = teamStats!!.teamNumber.toString()
         }
     }
 
@@ -138,13 +136,13 @@ fun TeamInputSection(
         } else {
             TeamStatsDisplay(stats = teamStats!!, onClear = {
                 viewModel.clearSlot(alliancePosition)
-            } , teamDao = viewModel.teamDao)
+            })
         }
     }
 }
 
 @Composable
-fun TeamStatsDisplay(stats: quickGameStats, onClear: () -> Unit, teamDao: teamDao) {
+fun TeamStatsDisplay(stats: quickGameStats, onClear: () -> Unit) {
     val df = DecimalFormat("#.##")
 
     Card(
@@ -161,11 +159,10 @@ fun TeamStatsDisplay(stats: quickGameStats, onClear: () -> Unit, teamDao: teamDa
                 Text(text = "Avg Teleop Score: ${df.format(stats.avgTeleopScore)}")
                 Text(text = "Avg Total Score: ${df.format(stats.avgTotalScore)}", fontWeight = FontWeight.Bold)
                 Text(text = "Climb Percentage: ${df.format(stats.climbPercentage)}%")
-                Text(text = "Amount of games: ${df.format(stats.amountOfGames)}%")
+                Text(text = "Amount of games: ${stats.amountOfGames}")
                 if (stats.generalNote.isNotBlank() && !stats.generalNote.contains("אין נתונים")) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(text = "Notes: ${stats.generalNote}", fontSize = 12.sp)
-
                 }
             }
             
@@ -184,5 +181,3 @@ fun TeamStatsDisplay(stats: quickGameStats, onClear: () -> Unit, teamDao: teamDa
         }
     }
 }
-
-

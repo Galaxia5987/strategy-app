@@ -84,13 +84,16 @@ dependencies {
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
     
-    // Fix for the Log4j crash on Android
+    // Log4j for Android
     implementation("org.apache.logging.log4j:log4j-api:2.17.2")
     implementation("org.apache.logging.log4j:log4j-core:2.17.2")
 
     // Stax/Woodstox for XML parsing
     implementation("com.fasterxml.woodstox:woodstox-core:6.5.0")
     implementation("stax:stax-api:1.0.1")
+
+    // Konfetti for celebrate effects
+    implementation("nl.dionsegijn:konfetti-compose:2.0.4")
 
     ksp("androidx.room:room-compiler:$roomVersion")
 
