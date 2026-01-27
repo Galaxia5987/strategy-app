@@ -1,5 +1,6 @@
 package com.example.frc5987scoutingapp.ui.galaxiaMatchesView
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,7 +28,6 @@ fun GalaxiaMatches(navController: NavController) {
                 .align(Alignment.TopCenter)
                 .padding(top = 32.dp)
         )
-
         Row(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
@@ -40,6 +40,9 @@ fun GalaxiaMatches(navController: NavController) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Column(modifier = Modifier.width(450.dp)) {
+                    Box {
+                        Box(modifier = Modifier.size(80.dp).background(Color.Transparent))
+                    }
                     for (i in 1..8) {
                         MatchButton(text = "Match $i") {
                             navController.navigate("GalaxiaAllianceMatchesView/$i")
@@ -55,6 +58,9 @@ fun GalaxiaMatches(navController: NavController) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Column(modifier = Modifier.width(450.dp)) {
+                    Box {
+                        Box(modifier = Modifier.size(80.dp).background(Color.Transparent))
+                    }
                     for (i in 9..16) {
                         MatchButton(text = "Match $i") {
                             navController.navigate("GalaxiaAllianceMatchesView/$i")
