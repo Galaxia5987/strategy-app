@@ -13,14 +13,13 @@ import kotlin.math.roundToInt
 
 data class TeamWithScore(
     val teamNumber: Int,
-    val teamName: String,
     val score: Float
 )
 class BestAllianceViewModel(private val teamDao: teamDao) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getRankedTeams(parameters: IntArray): Flow<List<TeamWithScore>> {
-        return teamDao.getAllTeamsData().flatMapLatest { teams ->
+        return teamDao.getAllGameData().flatMapLatest { teams ->
             if (teams.isEmpty()) {
                 flowOf(emptyList())
             } else {
@@ -32,7 +31,7 @@ class BestAllianceViewModel(private val teamDao: teamDao) : ViewModel() {
 
                     combine(avgAutoScoreFlow, avgTeleopScoreFlow, gameDataFlow) { avgAuto, avgTeleop, gameDataList ->
                         if (gameDataList.isEmpty()) {
-                            TeamWithScore(teamId, team.teamName, 0f)
+                            TeamWithScore(teamId, 0f)
                         } else {
                             val successfulClimbs = gameDataList.count { !(it.endPosition == EndPosition.No || it.endPosition == EndPosition.Fc)}
                             val climbPercentage = (successfulClimbs.toDouble() / gameDataList.size.toDouble()) * 100
@@ -59,7 +58,7 @@ class BestAllianceViewModel(private val teamDao: teamDao) : ViewModel() {
                                            (avgDefenceLevel * parameters[6] * 5.0) +
                                            (avgDrivingLevel * parameters[7] * 5.0)
 
-                            TeamWithScore(teamId, team.teamName, totalScore.toFloat())
+                            TeamWithScore(teamId, totalScore.toFloat())
                         }
                     }
                 }
