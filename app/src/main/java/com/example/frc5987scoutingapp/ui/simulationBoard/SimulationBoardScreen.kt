@@ -89,12 +89,12 @@ fun SimulationBoardScreen() {
     val density = LocalDensity.current
     
     // מיקום התחלתי של הרובוטים (Relative coordinates 0.0 - 1.0)
-    val B1initialX = 0.412f; val B1initialY = 0.2f
-    val B2initialX = 0.3705f; val B2initialY = 0.46f
-    val B3initialX = 0.329f; val B3initialY = 0.73f
-    val R1initialX = -0.135f; val R1initialY = 0.2f
-    val R2initialX = -0.1765f; val R2initialY = 0.46f
-    val R3initialX = -0.218f; val R3initialY = 0.732f
+    val B1initialX = 0.690f; val B1initialY = 0.2f
+    val B2initialX = 0.690f; val B2initialY = 0.46f
+    val B3initialX = 0.690f; val B3initialY = 0.73f
+    val R1initialX = 0.270f; val R1initialY = 0.2f
+    val R2initialX = 0.270f; val R2initialY = 0.46f
+    val R3initialX = 0.270f; val R3initialY = 0.73f
 
     // Absolute offsets in pixels
     var B1offsetX by remember { mutableFloatStateOf(0f) }
@@ -110,7 +110,6 @@ fun SimulationBoardScreen() {
     var R3offsetX by remember { mutableFloatStateOf(0f) }
     var R3offsetY by remember { mutableFloatStateOf(0f) }
 
-    // Initialize absolute offsets when container size is known
     LaunchedEffect(containerSize) {
         if (containerSize != IntSize.Zero) {
             B1offsetX = B1initialX * containerSize.width
@@ -486,26 +485,72 @@ fun SimulationBoardScreen() {
                         }
                     }
                 }
+                IconButton( //שינוי לרקע עם דלק
+                    onClick = {
+                        currentBackground = background1
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp)
+                            .background(Color.Yellow)
+                            .border(1.dp, Color.Yellow)
+                    )
+                }
+                IconButton( //שינוי לרקע בלי דלק
+                    onClick = {
+                        currentBackground = background2
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.size(24.dp)
+                            .background(Color.Gray)
+                            .border(1.dp, Color.Gray)
+                    )
+                }
+            }
 
-                // fake robots
+            IconButton( //שינוי לרקע עם דלק
+                onClick = {
+                    currentBackground = background1
+                }
+            ) {
                 Box(
-                    modifier = Modifier
+                    modifier = Modifier.size(24.dp)
+                        .background(Color.Yellow)
+                        .border(1.dp, Color.Yellow)
+                )
+            }
+            IconButton( //שינוי לרקע בלי דלק
+                onClick = {
+                    currentBackground = background2
+                }
+            ) {
+                Box(
+                    modifier = Modifier.size(24.dp)
+                        .background(Color.Gray)
+                        .border(1.dp, Color.Gray)
+                )
+            }
+        }
+            // fake robots
+            Box(
+                modifier = Modifier
                     .offset { IntOffset(B1offsetX.roundToInt(), B1offsetY.roundToInt()) }
-                        .size(50.dp)
-                        .combinedClickable(
-                            onClick = {
-                                current_robot = 1
-                                currentrobot1photo = fuel9
-                            },
-                            onDoubleClick = {
-                                currentrobot1photo = fuel25
-                            },
-                            onLongClick = {
-                                currentrobot1photo = fuel0
-                            }
-                        )
-                        .paint(painter = painterResource(id = currentrobot1photo), contentScale = ContentScale.FillBounds)
-                        .border(4.dp, Color.Blue)
+                    .size(50.dp)
+                    .combinedClickable(
+                        onClick = {
+                            current_robot = 1
+                            currentrobot1photo = fuel9
+                        },
+                        onDoubleClick = {
+                            currentrobot1photo = fuel25
+                        },
+                        onLongClick = {
+                            currentrobot1photo = fuel0
+                        }
+                    )
+                    .paint(painter = painterResource(id = currentrobot1photo), contentScale = ContentScale.FillBounds)
+                    .border(4.dp, Color.Blue)
                     .rotate(B1rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -514,24 +559,24 @@ fun SimulationBoardScreen() {
                             B1offsetY += dragAmount.y
                         }
                     }
-                )
-                Box(
-                    modifier = Modifier
+            )
+            Box(
+                modifier = Modifier
                     .offset { IntOffset(B2offsetX.roundToInt(), B2offsetY.roundToInt()) }
-                        .size(50.dp)
-                        .combinedClickable(
-                            onClick = {
-                                current_robot = 2
-                                currentrobot2photo = fuel9
-                            },
-                            onDoubleClick = {
-                                currentrobot2photo = fuel25
-                            },
-                            onLongClick = {
-                                currentrobot2photo = fuel0
-                            }
-                        )
-                        .paint(painter = painterResource(id = currentrobot2photo), contentScale = ContentScale.FillBounds)
+                    .size(50.dp)
+                    .combinedClickable(
+                        onClick = {
+                            current_robot = 2
+                            currentrobot2photo = fuel9
+                        },
+                        onDoubleClick = {
+                            currentrobot2photo = fuel25
+                        },
+                        onLongClick = {
+                            currentrobot2photo = fuel0
+                        }
+                    )
+                    .paint(painter = painterResource(id = currentrobot2photo), contentScale = ContentScale.FillBounds)
                     .border(4.dp, Color.Blue)
                     .rotate(B2rotation)
                     .pointerInput(Unit) {
@@ -541,25 +586,25 @@ fun SimulationBoardScreen() {
                             B2offsetY += dragAmount.y
                         }
                     }
-                )
-                Box(
-                    modifier = Modifier
+            )
+            Box(
+                modifier = Modifier
                     .offset { IntOffset(B3offsetX.roundToInt(), B3offsetY.roundToInt()) }
-                        .size(50.dp)
-                        .combinedClickable(
-                            onClick = {
-                                current_robot = 3
-                                currentrobot3photo = fuel9
-                            },
-                            onDoubleClick = {
-                                currentrobot3photo = fuel25
-                            },
-                            onLongClick = {
-                                currentrobot3photo = fuel0
-                            }
-                        )
-                        .paint(painter = painterResource(id = currentrobot3photo), contentScale = ContentScale.FillBounds)
-                        .border(4.dp, Color.Blue)
+                    .size(50.dp)
+                    .combinedClickable(
+                        onClick = {
+                            current_robot = 3
+                            currentrobot3photo = fuel9
+                        },
+                        onDoubleClick = {
+                            currentrobot3photo = fuel25
+                        },
+                        onLongClick = {
+                            currentrobot3photo = fuel0
+                        }
+                    )
+                    .paint(painter = painterResource(id = currentrobot3photo), contentScale = ContentScale.FillBounds)
+                    .border(4.dp, Color.Blue)
                     .rotate(B3rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -568,9 +613,9 @@ fun SimulationBoardScreen() {
                             B3offsetY += dragAmount.y
                         }
                     }
-                )
-                Box(
-                    modifier = Modifier
+            )
+            Box(
+                modifier = Modifier
                     .offset { IntOffset(R1offsetX.roundToInt(), R1offsetY.roundToInt()) }
                     .size(50.dp)
                     .combinedClickable(
@@ -585,8 +630,8 @@ fun SimulationBoardScreen() {
                             currentrobot4photo = fuel0
                         }
                     )
-                        .paint(painter = painterResource(id = currentrobot4photo), contentScale = ContentScale.FillBounds)
-                        .size(46.dp)
+                    .paint(painter = painterResource(id = currentrobot4photo), contentScale = ContentScale.FillBounds)
+                    .size(46.dp)
                     .border(4.dp, Color.Red)
                     .rotate(R1rotation)
                     .pointerInput(Unit) {
@@ -596,25 +641,25 @@ fun SimulationBoardScreen() {
                             R1offsetY += dragAmount.y
                         }
                     }
-                )
-                Box(
-                    modifier = Modifier
+            )
+            Box(
+                modifier = Modifier
                     .offset { IntOffset(R2offsetX.roundToInt(), R2offsetY.roundToInt()) }
-                        .size(50.dp)
-                        .combinedClickable(
-                            onClick = {
-                                current_robot = 5
-                                currentrobot5photo = fuel9
-                            },
-                            onDoubleClick = {
-                                currentrobot5photo = fuel25
-                            },
-                            onLongClick = {
-                                currentrobot5photo = fuel0
-                            }
-                        )
-                        .paint(painter = painterResource(id = currentrobot5photo), contentScale = ContentScale.FillBounds)
-                        .border(4.dp, Color.Red)
+                    .size(50.dp)
+                    .combinedClickable(
+                        onClick = {
+                            current_robot = 5
+                            currentrobot5photo = fuel9
+                        },
+                        onDoubleClick = {
+                            currentrobot5photo = fuel25
+                        },
+                        onLongClick = {
+                            currentrobot5photo = fuel0
+                        }
+                    )
+                    .paint(painter = painterResource(id = currentrobot5photo), contentScale = ContentScale.FillBounds)
+                    .border(4.dp, Color.Red)
                     .rotate(R2rotation)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
@@ -623,14 +668,14 @@ fun SimulationBoardScreen() {
                             R2offsetY += dragAmount.y
                         }
                     }
-                )
-                Box(
-                    modifier = Modifier
+            )
+            Box(
+                modifier = Modifier
                     .offset { IntOffset(R3offsetX.roundToInt(), R3offsetY.roundToInt()) }
                     .size(50.dp)
                     .combinedClickable(
                         onClick = {
-                        current_robot = 6
+                            current_robot = 6
                             currentrobot6photo = fuel9
                         },
                         onDoubleClick = {
@@ -650,31 +695,9 @@ fun SimulationBoardScreen() {
                             R3offsetY += dragAmount.y
                         }
                     }
-                )
-                IconButton( //שינוי לרקע עם דלק
-                    onClick = {
-                        currentBackground = background1
-                    }
-                ) {
-                    Box(
-                        modifier = Modifier.size(24.dp).background(Color.Yellow)
-                            .border(1.dp, Color.Yellow)
-                    )
-                }
-                IconButton( //שינוי לרקע בלי דלק
-                    onClick = {
-                        currentBackground = background2
-                    }
-                ) {
-                    Box(
-                        modifier = Modifier.size(24.dp).background(Color.Gray)
-                            .border(1.dp, Color.Gray)
-                    )
-                }
-            }
+            )
         }
     }
-}
 
 @Preview
 @Composable
