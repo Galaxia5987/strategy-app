@@ -7,14 +7,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.GameData
-import com.example.frc5987scoutingapp.data.model.enums.EndPosition
-import com.example.frc5987scoutingapp.data.model.enums.scoringData
+import com.example.frc5987scoutingapp.data.model.enums.ClimbedTower
+import com.example.frc5987scoutingapp.data.model.enums.ScoringData
 import com.example.frc5987scoutingapp.data.model.quickGameStats
 import com.example.frc5987scoutingapp.data.model.teams
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+
 
 enum class GalaxiaAlliancePosition {
     BLUE_1, BLUE_2, BLUE_3,
@@ -58,7 +59,7 @@ class GalaxiaMatchesViewModal(val teamDao: teamDao) : ViewModel() {
                     val avgAuto = calculateAutoAverage(gameDataList)
                     val avgTeleop = calculateTeleopAverage(gameDataList)
 
-                    val successfulClimbs = gameDataList.count { !(it.endPosition == EndPosition.No || it.endPosition == EndPosition.Fc)}
+                    val successfulClimbs = gameDataList.count { it.e_climbedTower != ClimbedTower.No && it.e_climbedTower != ClimbedTower.F }
                     val climbPercentage = (successfulClimbs.toDouble() / gameDataList.size) * 100
 
                     val avgDefenceLevel = gameDataList.map { it.defenseSkills }.average().let { if (it.isNaN()) 0 else it.roundToInt() }
@@ -81,23 +82,17 @@ class GalaxiaMatchesViewModal(val teamDao: teamDao) : ViewModel() {
 
     private fun calculateAutoAverage(list: List<GameData>): Double {
         return list.map {
-            (it.a_l4Scored * scoringData.AUTON_L4_POINTS) +
-                    (it.a_l3Scored * scoringData.AUTON_L3_POINTS) +
-                    (it.a_l2Scored * scoringData.AUTON_L2_POINTS) +
-                    (it.a_l1Scored * scoringData.AUTON_L1_POINTS) +
-                    (it.a_bargeAlgae * scoringData.AUTON_NET_POINTS) +
-                    (if (it.moved) scoringData.AUTON_LEAVE_POINTS else 0)
+            (it.a_robotFoulScored * ScoringData.fuelScored) +
+                    (it.a_humanFoulScored * ScoringData.fuelScored) +
+
+                    (if (it.a_moved) ScoringData.a_climb else 0)
         }.average().let { if (it.isNaN()) 0.0 else it }
     }
 
     private fun calculateTeleopAverage(list: List<GameData>): Double {
         return list.map {
-            (it.t_l4Scored * scoringData.TELEOP_L4_POINTS) +
-                    (it.t_l3Scored * scoringData.TELEOP_L3_POINTS) +
-                    (it.t_l2Scored * scoringData.TELEOP_L2_POINTS) +
-                    (it.t_l1Scored * scoringData.TELEOP_L1_POINTS) +
-                    (it.t_bargeAlgae * scoringData.TELEOP_NET_POINTS) +
-                    (it.t_processorAlgae * scoringData.TELEOP_PROCESSOR_POINTS)
+            (it.t_robotFoulScored * ScoringData.fuelScored) +
+                    (it.t_humanFoulScored * ScoringData.fuelScored)
         }.average().let { if (it.isNaN()) 0.0 else it }
     }
 
@@ -152,12 +147,3 @@ class GalaxiaMatchesViewModal(val teamDao: teamDao) : ViewModel() {
 
 }
 
-class AllianceViewModelFactory(private val dao: teamDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(GalaxiaMatchesViewModal(dao)::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return GalaxiaMatchesViewModal(dao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

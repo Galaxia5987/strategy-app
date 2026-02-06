@@ -25,9 +25,12 @@ import com.example.frc5987scoutingapp.ui.galaxiaMatchesView.GalaxiaAllianceMatch
 import com.example.frc5987scoutingapp.ui.galaxiaMatchesView.GalaxiaMatches
 import com.example.frc5987scoutingapp.ui.galaxiaMatchesView.GalaxiaMatchesViewModal
 import com.example.frc5987scoutingapp.ui.galaxiaMatchesView.GalaxiaMatchesViewModelFactory
+import com.example.frc5987scoutingapp.ui.gameDataTable.GameDataTable
+import com.example.frc5987scoutingapp.data.repo.ScoutingDataRepository
 import com.example.frc5987scoutingapp.ui.gamesSchedule.GamesScheduleFile
 import com.example.frc5987scoutingapp.ui.simulationBoard.SimulationBoardScreen
 import com.example.frc5987scoutingapp.ui.theme.FRC5987ScoutingAppTheme
+
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -48,6 +51,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val teamDao = scoutingDatabase.getDatabase(application).teamDao()
+        val scoutingDataRepository = ScoutingDataRepository(teamDao)
         
         // Factory for standard Alliance View
         val allianceViewModelFactory = AllianceViewModelFactory(teamDao)
@@ -95,7 +99,7 @@ class MainActivity : ComponentActivity() {
                             BestAlliance()
                         }
                         composable("GameDataTable") {
-                            TODO()
+                            GameDataTable(scoutingDataRepository)
                         }
                         composable("GamesSchedule") {
                             GamesScheduleFile()

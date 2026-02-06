@@ -13,11 +13,10 @@ import com.example.frc5987scoutingapp.data.model.teams
 
 @Database(
     entities = [teams::class, GameData::class, preScoutData::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class scoutingDatabase : RoomDatabase() {
-
     abstract fun teamDao(): teamDao
 
     companion object {

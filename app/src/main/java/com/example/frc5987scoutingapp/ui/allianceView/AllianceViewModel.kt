@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.GameData
-import com.example.frc5987scoutingapp.data.model.enums.EndPosition
-import com.example.frc5987scoutingapp.data.model.enums.scoringData
+import com.example.frc5987scoutingapp.data.model.enums.ClimbedTower
+import com.example.frc5987scoutingapp.data.model.enums.ScoringData
 import com.example.frc5987scoutingapp.data.model.quickGameStats
 import com.example.frc5987scoutingapp.data.model.teams
 import kotlinx.coroutines.Job
@@ -56,13 +56,12 @@ class AllianceViewModel(val teamDao: teamDao) : ViewModel() {
                     updateAlliancePosition(alliancePosition, quickGameStats(teamNumber = teamId, generalNote = "אין נתונים זמינים"))
                 } else {
                     val avgAuto = calculateAutoAverage(gameDataList)
-                    val avgTeleop = calculateTeleopAverage(gameDataList)
-                    
-                    val successfulClimbs = gameDataList.count { !(it.endPosition == EndPosition.No || it.endPosition == EndPosition.Fc)}
+                    val avgTeleop = calculateTeleopAndEndGameAverage(gameDataList)
+
+                    val successfulClimbs = gameDataList.count { it.e_climbedTower != ClimbedTower.No && it.e_climbedTower != ClimbedTower.F }
                     val climbPercentage = (successfulClimbs.toDouble() / gameDataList.size) * 100
 
                     val avgDefenceLevel = gameDataList.map { it.defenseSkills }.average().let { if (it.isNaN()) 0 else it.roundToInt() }
-                    val amountOfGames = gameDataList.size
                     val note = "ממוצע רמת הגנה: $avgDefenceLevel"
 
                     updateAlliancePosition(alliancePosition, quickGameStats(
@@ -80,24 +79,22 @@ class AllianceViewModel(val teamDao: teamDao) : ViewModel() {
     }
 
     private fun calculateAutoAverage(list: List<GameData>): Double {
-        return list.map { 
-            (it.a_l4Scored * scoringData.AUTON_L4_POINTS) + 
-            (it.a_l3Scored * scoringData.AUTON_L3_POINTS) + 
-            (it.a_l2Scored * scoringData.AUTON_L2_POINTS) + 
-            (it.a_l1Scored * scoringData.AUTON_L1_POINTS) + 
-            (it.a_bargeAlgae * scoringData.AUTON_NET_POINTS) + 
-            (if (it.moved) scoringData.AUTON_LEAVE_POINTS else 0)
+        return list.map {
+            (it.a_robotFoulScored * ScoringData.fuelScored) +
+                    (it.a_humanFoulScored * ScoringData.fuelScored) +
+                    (if (it.a_climbedTower != ClimbedTower.No || it.a_climbedTower != ClimbedTower.F) ScoringData.a_climb else 0)
         }.average().let { if (it.isNaN()) 0.0 else it }
     }
 
-    private fun calculateTeleopAverage(list: List<GameData>): Double {
+    private fun calculateTeleopAndEndGameAverage(list: List<GameData>): Double {
         return list.map { 
-            (it.t_l4Scored * scoringData.TELEOP_L4_POINTS) + 
-            (it.t_l3Scored * scoringData.TELEOP_L3_POINTS) + 
-            (it.t_l2Scored * scoringData.TELEOP_L2_POINTS) + 
-            (it.t_l1Scored * scoringData.TELEOP_L1_POINTS) + 
-            (it.t_bargeAlgae * scoringData.TELEOP_NET_POINTS) + 
-            (it.t_processorAlgae * scoringData.TELEOP_PROCESSOR_POINTS)
+            (it.t_robotFoulScored * ScoringData.fuelScored) +
+            (it.t_humanFoulScored * ScoringData.fuelScored) +
+                    (if (it.e_climbedTower == ClimbedTower.No) 0
+                        else if (it.e_climbedTower == ClimbedTower.F)  0
+                            else if (it.e_climbedTower == ClimbedTower.L1) ScoringData.e_climbLow
+                    else if (it.e_climbedTower == ClimbedTower.L2) ScoringData.e_climbMid
+                    else (ScoringData.e_climbHigh)) //(it.e_climbedTower == ClimbedTower.L3)
         }.average().let { if (it.isNaN()) 0.0 else it }
     }
 

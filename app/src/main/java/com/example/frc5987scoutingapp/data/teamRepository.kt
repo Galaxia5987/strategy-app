@@ -3,7 +3,8 @@ package com.example.frc5987scoutingapp.data
 import com.example.frc5987scoutingapp.data.DAO.teamDao
 import com.example.frc5987scoutingapp.data.model.teams
 import com.example.frc5987scoutingapp.data.model.GameData
-import com.example.frc5987scoutingapp.data.model.enums.scoringData
+import com.example.frc5987scoutingapp.data.model.GameDataWithTeamName
+import com.example.frc5987scoutingapp.data.model.enums.ScoringData
 import kotlinx.coroutines.flow.Flow
 
 class teamRepository(private val teamDao: teamDao) {
@@ -33,48 +34,41 @@ class teamRepository(private val teamDao: teamDao) {
         return teamDao.amountOfGames(teamNumber)
     }
 
-  //  fun getAllpreScoutData(): Flow<List<preScoutData>> {
-  //      return teamDao.getAllpreScoutData()
-  //  }
-
-    fun teamSucssesScoringRate(teamNumber: Int): Flow<List<GameData>> {
-        return teamDao.teamSucssesScoringRate(teamNumber)
+    fun getAllGameDataWithTeamName(): Flow<List<GameDataWithTeamName>> {
+        return teamDao.getAllGameDataWithTeamName()
     }
 
-    fun teamsMatchSucssesScoringRate(teamNumber: Int, D_MatchNumber: Int): Flow<List<GameData>> {
-        return teamDao.teamsMatchSucssesScoringRate(teamNumber, D_MatchNumber)
+    suspend fun deleteGameDataById(gameDataId: Int) {
+        teamDao.deleteGameDataById(gameDataId)
     }
 
     fun getAutonomousScoreForMatch(teamNumber: Int, matchNumber: Int): Flow<Int?> {
         return teamDao.getAutonomousScoreForMatch(
             teamNumber = teamNumber,
             matchNumber = matchNumber,
-            l4Points = scoringData.AUTON_L4_POINTS,
-            l3Points = scoringData.AUTON_L3_POINTS,
-            l2Points = scoringData.AUTON_L2_POINTS,
-            l1Points = scoringData.AUTON_L1_POINTS,
-            netPoints = scoringData.AUTON_NET_POINTS,
-            leavePoints = scoringData.AUTON_LEAVE_POINTS )
-
-
-
+            fuelPoints = ScoringData.fuelScored
+        )
     }
 
-    fun getAutonomousScoreAverage(teamNumber: Int): Flow<Int?> {
+    fun getAutonomousScoreAverage(teamNumber: Int): Flow<Int> {
         return teamDao.getAutonomousScoreAverage(
             teamNumber = teamNumber,
-            l4Points = scoringData.AUTON_L4_POINTS,
-            l3Points = scoringData.AUTON_L3_POINTS,
-            l2Points = scoringData.AUTON_L2_POINTS,
-            l1Points = scoringData.AUTON_L1_POINTS,
-            netPoints = scoringData.AUTON_NET_POINTS,
-            leavePoints = scoringData.AUTON_LEAVE_POINTS   )
+            fuelPoints = ScoringData.fuelScored
+        )
     }
 
+    fun getTeleopScoreForMatch(teamNumber: Int, matchNumber: Int): Flow<Int> {
+        return teamDao.getTeleopScoreForMatch(
+            teamNumber = teamNumber,
+            matchNumber = matchNumber,
+            fuelPoints = ScoringData.fuelScored
+        )
+    }
 
-
-
-
+    fun getTeleopScoreAverage(teamNumber: Int): Flow<Int> {
+        return teamDao.getTeleopScoreAverage(
+            teamNumber = teamNumber,
+            fuelPoints = ScoringData.fuelScored
+        )
+    }
 }
-
-
