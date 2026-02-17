@@ -135,7 +135,7 @@ fun DataRow(
     Row(modifier = Modifier.fillMaxWidth()) {
         // Frozen Columns
         Row(verticalAlignment = Alignment.CenterVertically) {
-            // Added Delete button first to match Header order
+            // Delete button first to match Header order
             Box(
                 modifier = Modifier
                     .width(50.dp)
