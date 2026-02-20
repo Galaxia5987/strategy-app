@@ -1,5 +1,6 @@
 package com.example.frc5987scoutingapp.ui
 
+import ads_mobile_sdk.f1
 import android.R.attr.x
 import android.R.attr.y
 import androidx.compose.foundation.Image
@@ -75,9 +76,9 @@ fun HeaderSection() {
             painter = painterResource(id = R.drawable.app_logo),
             contentDescription = "Galaxia Logo",
             modifier = Modifier
-                .size(380.dp)
+                .size(400.dp)
                 .padding(end =0.dp)
-                .absoluteOffset( x = 0 .dp, y = -100 .dp  )
+
         )
 
     }
@@ -89,7 +90,7 @@ fun AppButton(text: String, onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp)
+            .padding(bottom = 20.dp )
             .height(60.dp),
         shape = RoundedCornerShape(50.dp),
         colors = ButtonDefaults.buttonColors(
@@ -109,14 +110,15 @@ fun AppButton(text: String, onClick: () -> Unit) {
 @Composable
 fun NavigationButtonsColumn(navController: NavController, onCelebrateClick: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth() ,
         verticalAlignment = Alignment.CenterVertically
+
 
     ) {
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             // Left Column
             Column(
@@ -163,6 +165,7 @@ fun NavigationButtonsColumn(navController: NavController, onCelebrateClick: () -
         }
     }
 }
+
 
 
 @Preview
