@@ -69,7 +69,7 @@ fun BestAllianceInputs(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "STRATEGY", color = Color(0xFF1353C7), fontSize = 60.sp, fontWeight = FontWeight.Bold)
             Image(
-                painter = painterResource(id = R.drawable.galaxia_logo),
+                painter = painterResource(id = R.drawable.app_logo),
                 contentDescription = "Galaxia Logo",
                 modifier = Modifier.size(80.dp)
             )

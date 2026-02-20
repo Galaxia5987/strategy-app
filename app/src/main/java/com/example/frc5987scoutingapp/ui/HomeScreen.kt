@@ -1,5 +1,7 @@
 package com.example.frc5987scoutingapp.ui
 
+import android.R.attr.x
+import android.R.attr.y
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +40,7 @@ fun MainScreenContent(modifier: Modifier = Modifier, navController: NavControlle
         modifier = Modifier.fillMaxSize()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.main_page_background),
+            painter = painterResource(id = R.drawable.homescreen_background),
             contentDescription = "main page Background",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -46,7 +48,7 @@ fun MainScreenContent(modifier: Modifier = Modifier, navController: NavControlle
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(top = 25.dp),
+                .padding(top = 1.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -67,20 +69,15 @@ fun HeaderSection() {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(bottom = 32.dp)
+        modifier = Modifier.padding(bottom = 0.dp)
     ) {
-        Text(
-            text = "startegy",
-            color = Color(0xFF2196F3),
-            fontSize = 80.sp,
-            fontWeight = FontWeight.Bold
-        )
         Image(
-            painter = painterResource(id = R.drawable.galaxia_logo),
+            painter = painterResource(id = R.drawable.app_logo),
             contentDescription = "Galaxia Logo",
             modifier = Modifier
-                .size(200.dp)
-                .padding(end = 12.dp)
+                .size(380.dp)
+                .padding(end =0.dp)
+                .absoluteOffset( x = 0 .dp, y = -100 .dp  )
         )
 
     }
@@ -93,7 +90,7 @@ fun AppButton(text: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)
-            .height(80.dp),
+            .height(60.dp),
         shape = RoundedCornerShape(50.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
@@ -104,7 +101,7 @@ fun AppButton(text: String, onClick: () -> Unit) {
             text,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier.padding(vertical =8.dp)
         )
     }
 }

@@ -100,7 +100,8 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("GameDataTable") {
                             GameDataTable(scoutingDataRepository)
-                        }
+                                }
+
                         composable("GamesSchedule") {
                             GamesScheduleFile()
                         }
