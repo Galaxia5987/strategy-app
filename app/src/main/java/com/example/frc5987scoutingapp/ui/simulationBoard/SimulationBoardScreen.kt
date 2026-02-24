@@ -87,14 +87,20 @@ fun SimulationBoardScreen() {
     )
 
     val density = LocalDensity.current
-    
+
     // מיקום התחלתי של הרובוטים (Relative coordinates 0.0 - 1.0)
-    val B1initialX = 0.690f; val B1initialY = 0.2f
-    val B2initialX = 0.690f; val B2initialY = 0.46f
-    val B3initialX = 0.690f; val B3initialY = 0.73f
-    val R1initialX = 0.270f; val R1initialY = 0.2f
-    val R2initialX = 0.270f; val R2initialY = 0.46f
-    val R3initialX = 0.270f; val R3initialY = 0.73f
+    val B1initialX = 0.690f;
+    val B1initialY = 0.2f
+    val B2initialX = 0.690f;
+    val B2initialY = 0.46f
+    val B3initialX = 0.690f;
+    val B3initialY = 0.73f
+    val R1initialX = 0.270f;
+    val R1initialY = 0.2f
+    val R2initialX = 0.270f;
+    val R2initialY = 0.46f
+    val R3initialX = 0.270f;
+    val R3initialY = 0.73f
 
     // Absolute offsets in pixels
     var B1offsetX by remember { mutableFloatStateOf(0f) }
@@ -224,7 +230,12 @@ fun SimulationBoardScreen() {
                     if (pathData.isFuel) {
                         pathData.points.forEach { point ->
                             drawCircle(color = Color.Yellow, radius = 6.dp.toPx(), center = point)
-                            drawCircle(color = Color.Black, radius = 6.dp.toPx(), center = point, style = Stroke(width = 1.dp.toPx()))
+                            drawCircle(
+                                color = Color.Black,
+                                radius = 6.dp.toPx(),
+                                center = point,
+                                style = Stroke(width = 1.dp.toPx())
+                            )
                         }
                     } else if (pathData.points.size > 1) {
                         val path = Path().apply {
@@ -245,7 +256,12 @@ fun SimulationBoardScreen() {
                 if (isFuelMode) {
                     currentPathPoints.forEach { point ->
                         drawCircle(color = Color.Yellow, radius = 6.dp.toPx(), center = point)
-                        drawCircle(color = Color.Black, radius = 6.dp.toPx(), center = point, style = Stroke(width = 1.dp.toPx()))
+                        drawCircle(
+                            color = Color.Black,
+                            radius = 6.dp.toPx(),
+                            center = point,
+                            style = Stroke(width = 1.dp.toPx())
+                        )
                     }
                 } else if (currentPathPoints.size > 1) {
                     val currentPath = Path().apply {
@@ -376,7 +392,11 @@ fun SimulationBoardScreen() {
                         modifier = Modifier
                             .size(24.dp)
                             .background(Color.Yellow, CircleShape)
-                            .border(width = if (isFuelMode) 2.dp else 1.dp, color = Color.White, shape = CircleShape)
+                            .border(
+                                width = if (isFuelMode) 2.dp else 1.dp,
+                                color = Color.White,
+                                shape = CircleShape
+                            )
                     )
                 }
 
@@ -390,8 +410,10 @@ fun SimulationBoardScreen() {
                         drawColor = Color.Red
                     }
                 ) {
-                    Box(modifier = Modifier.size(24.dp).background(Color.Red, CircleShape)
-                        .border(1.dp, Color.White, CircleShape))
+                    Box(
+                        modifier = Modifier.size(24.dp).background(Color.Red, CircleShape)
+                            .border(1.dp, Color.White, CircleShape)
+                    )
 
                 }
 
@@ -440,7 +462,7 @@ fun SimulationBoardScreen() {
                             .border(1.dp, Color.White, CircleShape)
                     )
                 }
-                
+
                 // Eraser Section
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     IconButton(
@@ -485,15 +507,19 @@ fun SimulationBoardScreen() {
                         }
                     }
                 }
+                Spacer(modifier = Modifier.width(230.dp))
+
                 IconButton( //שינוי לרקע עם דלק
                     onClick = {
                         currentBackground = background1
                     }
-                ) {
+                )
+                {
                     Box(
                         modifier = Modifier.size(24.dp)
                             .background(Color.Yellow)
                             .border(1.dp, Color.Yellow)
+
                     )
                 }
                 IconButton( //שינוי לרקע בלי דלק
@@ -507,31 +533,8 @@ fun SimulationBoardScreen() {
                             .border(1.dp, Color.Gray)
                     )
                 }
-            }
 
-            IconButton( //שינוי לרקע עם דלק
-                onClick = {
-                    currentBackground = background1
-                }
-            ) {
-                Box(
-                    modifier = Modifier.size(24.dp)
-                        .background(Color.Yellow)
-                        .border(1.dp, Color.Yellow)
-                )
             }
-            IconButton( //שינוי לרקע בלי דלק
-                onClick = {
-                    currentBackground = background2
-                }
-            ) {
-                Box(
-                    modifier = Modifier.size(24.dp)
-                        .background(Color.Gray)
-                        .border(1.dp, Color.Gray)
-                )
-            }
-        }
             // fake robots
             Box(
                 modifier = Modifier
@@ -549,7 +552,10 @@ fun SimulationBoardScreen() {
                             currentrobot1photo = fuel0
                         }
                     )
-                    .paint(painter = painterResource(id = currentrobot1photo), contentScale = ContentScale.FillBounds)
+                    .paint(
+                        painter = painterResource(id = currentrobot1photo),
+                        contentScale = ContentScale.FillBounds
+                    )
                     .border(4.dp, Color.Blue)
                     .rotate(B1rotation)
                     .pointerInput(Unit) {
@@ -576,7 +582,10 @@ fun SimulationBoardScreen() {
                             currentrobot2photo = fuel0
                         }
                     )
-                    .paint(painter = painterResource(id = currentrobot2photo), contentScale = ContentScale.FillBounds)
+                    .paint(
+                        painter = painterResource(id = currentrobot2photo),
+                        contentScale = ContentScale.FillBounds
+                    )
                     .border(4.dp, Color.Blue)
                     .rotate(B2rotation)
                     .pointerInput(Unit) {
@@ -603,7 +612,10 @@ fun SimulationBoardScreen() {
                             currentrobot3photo = fuel0
                         }
                     )
-                    .paint(painter = painterResource(id = currentrobot3photo), contentScale = ContentScale.FillBounds)
+                    .paint(
+                        painter = painterResource(id = currentrobot3photo),
+                        contentScale = ContentScale.FillBounds
+                    )
                     .border(4.dp, Color.Blue)
                     .rotate(B3rotation)
                     .pointerInput(Unit) {
@@ -630,7 +642,10 @@ fun SimulationBoardScreen() {
                             currentrobot4photo = fuel0
                         }
                     )
-                    .paint(painter = painterResource(id = currentrobot4photo), contentScale = ContentScale.FillBounds)
+                    .paint(
+                        painter = painterResource(id = currentrobot4photo),
+                        contentScale = ContentScale.FillBounds
+                    )
                     .size(46.dp)
                     .border(4.dp, Color.Red)
                     .rotate(R1rotation)
@@ -658,7 +673,10 @@ fun SimulationBoardScreen() {
                             currentrobot5photo = fuel0
                         }
                     )
-                    .paint(painter = painterResource(id = currentrobot5photo), contentScale = ContentScale.FillBounds)
+                    .paint(
+                        painter = painterResource(id = currentrobot5photo),
+                        contentScale = ContentScale.FillBounds
+                    )
                     .border(4.dp, Color.Red)
                     .rotate(R2rotation)
                     .pointerInput(Unit) {
@@ -685,7 +703,10 @@ fun SimulationBoardScreen() {
                             currentrobot6photo = fuel0
                         }
                     )
-                    .paint(painter = painterResource(id = currentrobot6photo), contentScale = ContentScale.FillBounds)
+                    .paint(
+                        painter = painterResource(id = currentrobot6photo),
+                        contentScale = ContentScale.FillBounds
+                    )
                     .border(4.dp, Color.Red)
                     .rotate(R3rotation)
                     .pointerInput(Unit) {
@@ -698,7 +719,7 @@ fun SimulationBoardScreen() {
             )
         }
     }
-
+}
 @Preview
 @Composable
 private fun SimulationBoardScreenPreview() {

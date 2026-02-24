@@ -1,8 +1,5 @@
 package com.example.frc5987scoutingapp.ui
 
-import ads_mobile_sdk.f1
-import android.R.attr.x
-import android.R.attr.y
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +52,7 @@ fun MainScreenContent(modifier: Modifier = Modifier, navController: NavControlle
             verticalArrangement = Arrangement.Top
         ) {
             HeaderSection()
-            Spacer(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(0.dp))
             NavigationButtonsColumn(
                 navController = navController,
                 onCelebrateClick = { showConfetti = true }
@@ -65,7 +62,6 @@ fun MainScreenContent(modifier: Modifier = Modifier, navController: NavControlle
         ConfettiRain(show = showConfetti)
     }
 }
-
 @Composable
 fun HeaderSection() {
     Row(
@@ -78,7 +74,7 @@ fun HeaderSection() {
             contentDescription = "Galaxia Logo",
             modifier = Modifier
                 .size(400.dp)
-                .padding(end =0.dp)
+                .padding(0.dp)
 
         )
 
@@ -91,8 +87,8 @@ fun AppButton(text: String, onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp )
-            .height(60.dp),
+            .padding(bottom = 15.dp )
+            .height(50.dp),
         shape = RoundedCornerShape(50.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
@@ -111,10 +107,10 @@ fun AppButton(text: String, onClick: () -> Unit) {
 @Composable
 fun NavigationButtonsColumn(navController: NavController, onCelebrateClick: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth() ,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
-
-
     ) {
         Column(
             modifier = Modifier.weight(1f),
@@ -140,49 +136,52 @@ fun NavigationButtonsColumn(navController: NavController, onCelebrateClick: () -
                 }
             }
         }
+
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {        Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.width(500.dp)
-            ) {
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.width(500.dp)
+        ) {
 
-                // Right Column
-                AppButton(text = "Scanner") {
-                    navController.navigate("QRinsert")
-                }
-                AppButton(text = "Alliance pick") {
-                    navController.navigate("BestAlliance")
-                }
-                AppButton(text = "Alliance view") {
-                    navController.navigate("AllianceView")
-                }
-                AppButton(text = "I need to make something up") {
-                    onCelebrateClick()
-                }
+            // Right Column
+            AppButton(text = "Scanner") {
+                navController.navigate("QRinsert")
             }
+            AppButton(text = "Alliance pick") {
+                navController.navigate("BestAlliance")
+            }
+            AppButton(text = "Alliance view") {
+                navController.navigate("AllianceView")
+            }
+            AppButton(text = "I need to make something up") {
+                onCelebrateClick()
+            }
+        }
         }
     }
 }
 
 
+    @Preview
+    @Composable
+    fun MainScreenContentPreview() {
+        MainScreenContent(navController = NavController(LocalContext.current))
+    }
 
-@Preview
-@Composable
-fun MainScreenContentPreview() {
-    MainScreenContent(navController = NavController(LocalContext.current))
-}
+    @Preview
+    @Composable
+    fun HeaderSectionPreview() {
+        HeaderSection()
+    }
 
-@Preview
-@Composable
-fun HeaderSectionPreview() {
-    HeaderSection()
-}
+    @Preview
+    @Composable
+    fun NavigationButtonsColumnPreview() {
+        NavigationButtonsColumn(
+            navController = NavController(LocalContext.current),
+            onCelebrateClick = {})
+    }
 
-@Preview
-@Composable
-fun NavigationButtonsColumnPreview() {
-    NavigationButtonsColumn(navController = NavController(LocalContext.current), onCelebrateClick = {})
-}
